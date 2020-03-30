@@ -2,8 +2,14 @@ import math
 
 
 def function(x):
+    '''Function f(x) to be integrated'''
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
+
+
+# ======================================= #
+#       Fórmulas de newton-colos          #
+# ======================================= #
 def regra_trapezio(f, xi, xf, k, delta_x):
     return (delta_x/2)*(f(xi) + f(xf)) 
 
@@ -34,6 +40,10 @@ def regra_poli_4_fechada(f, xi, xf, k, delta_x):
 def regra_poli_4_aberta(f, xi, xf, k, delta_x):
     h = delta_x / 6
     return (3*h/10) * (11*f(xi + h) - 14*f(xi + 2*h) + 26*f(xi + 3*h) - 14*f(xi + 4*h) + 11*f(xi + 5*h))
+
+# ======================================= #
+#     Funções de integração numerica      # 
+# ======================================= #
 
 def integrate_n(f, a, b, n, subs_func = regra_trapezio):
     I = 0
