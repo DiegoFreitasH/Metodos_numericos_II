@@ -5,11 +5,10 @@ def function(x):
     '''Function f(x) to be integrated'''
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
-
-
 # ======================================= #
 #       Fórmulas de newton-colos          #
 # ======================================= #
+
 def regra_trapezio(f, xi, xf, k, delta_x):
     return (delta_x/2)*(f(xi) + f(xf)) 
 
@@ -82,6 +81,10 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False):
         file.write(f"Resultado: {I:.7f}\n")
         file.close()
     return I
+
+# ======================================= #
+#       Testes e Execução do código       # 
+# ======================================= #
 
 trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio)
 trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto)
