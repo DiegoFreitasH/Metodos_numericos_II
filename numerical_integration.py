@@ -5,6 +5,8 @@ def function(x):
     '''Function f(x) to be integrated'''
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
+integral_precisa = 17.8764703
+
 # ======================================= #
 #       Fórmulas de newton-colos          #
 # ======================================= #
@@ -85,22 +87,25 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False):
 # ======================================= #
 #       Testes e Execução do código       # 
 # ======================================= #
+def main():
+    trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio, True)
+    trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto, True)
+    simpson = integrate(function, 0, 1, math.pow(10, -6), regra_simpson, True)
+    milne = integrate(function, 0, 1, math.pow(10, -6), regra_milne, True)
+    simpson_3_8 = integrate(function, 0, 1, math.pow(10, -6), regra_simpson_3_8, True)
+    poli_3_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_3_aberta, True)
+    poli_4_fechada = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_fechada, True)
+    poli_4_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_aberta, True)
 
-trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio, True)
-trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto, True)
-simpson = integrate(function, 0, 1, math.pow(10, -6), regra_simpson, True)
-milne = integrate(function, 0, 1, math.pow(10, -6), regra_milne, True)
-simpson_3_8 = integrate(function, 0, 1, math.pow(10, -6), regra_simpson_3_8, True)
-poli_3_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_3_aberta, True)
-poli_4_fechada = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_fechada, True)
-poli_4_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_aberta, True)
+    print(f"Trapezio Fechado \t= {trapezio:.7f}")
+    print(f"Trapezio Aberto \t= {trapezio_aberto:.7f}")
+    print(f"Simpson 1/8 \t\t= {simpson:.7f}")
+    print(f"Milne \t\t\t= {milne:.7f}")
+    print(f"Simpson 3/8 \t\t= {simpson_3_8:.7f}")
+    print(f"Polinomio 3 Aberta \t= {poli_3_aberta:.7f}")
+    print(f"Polinomio 4 Fechada \t= {poli_4_fechada:.7f}")
+    print(f"Polinomio 4 Aberta \t= {poli_4_aberta:.7f}")
+    print(f"Integral \t\t= {integral_precisa}")
 
-# print(f"Trapezio Fechado = {trapezio:.7f}")
-# print(f"Trapezio Aberto = {trapezio_aberto:.7f}")
-# print(f"Simpson 1/8 = {simpson:.7f}")
-# print(f"Milne = {milne:.7f}")
-# print(f"Simpson 3/8 = {simpson_3_8:.7f}")
-# print(f"Polinomio 3 Aberta = {poli_3_aberta:.7f}")
-# print(f"Polinomio 4 Fechada = {poli_4_fechada:.7f}")
-# print(f"Polinomio 4 Aberta = {poli_4_aberta:.7f}")
-# print(f"Integral = 17.8764703")
+if __name__ == "__main__":
+    main()
