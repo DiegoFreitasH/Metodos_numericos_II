@@ -61,7 +61,7 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False):
     erro = 1
     i = 0
     
-    if(debug): file = open(f"{subs_func.__name__}.txt", "w")
+    if(debug): file = open(f"./out/{subs_func.__name__}.txt", "w")
 
     while erro > E:
         N *= 2
@@ -86,14 +86,14 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False):
 #       Testes e Execução do código       # 
 # ======================================= #
 
-trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio)
-trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto)
-simpson = integrate(function, 0, 1, math.pow(10, -6), regra_simpson)
-milne = integrate(function, 0, 1, math.pow(10, -6), regra_milne)
-simpson_3_8 = integrate(function, 0, 1, math.pow(10, -6), regra_simpson_3_8)
-poli_3_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_3_aberta)
-poli_4_fechada = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_fechada)
-poli_4_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_aberta)
+trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio, True)
+trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto, True)
+simpson = integrate(function, 0, 1, math.pow(10, -6), regra_simpson, True)
+milne = integrate(function, 0, 1, math.pow(10, -6), regra_milne, True)
+simpson_3_8 = integrate(function, 0, 1, math.pow(10, -6), regra_simpson_3_8, True)
+poli_3_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_3_aberta, True)
+poli_4_fechada = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_fechada, True)
+poli_4_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_aberta, True)
 
 # print(f"Trapezio Fechado = {trapezio:.7f}")
 # print(f"Trapezio Aberto = {trapezio_aberto:.7f}")
