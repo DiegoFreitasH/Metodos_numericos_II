@@ -1,3 +1,4 @@
+import math
 # ======================================= #
 #       Fórmulas de newton-colos          #
 # ======================================= #
@@ -37,14 +38,30 @@ def regra_poli_4_aberta(f, xi, xf, k, delta_x):
 #       Quadratura de Gauss-Legendre      #
 # ======================================= #
 
+def x(xi, xf, a):
+    return ((xi + xf)/2) + ((xf - xi)/2)*a
+
 def gauss_legendre_2p(f, xi, xf, k, delta_x):
-    pass
+    x_a1 = x(xi, xf, -1*math.sqrt(1/3))
+    x_a2 = x(xi, xf, math.sqrt(1/3)) 
+    return ((xf-xi)/2)*(f(x_a1) + f(x_a2))
 
 def gauss_legendre_3p(f, xi, xf, k, delta_x):
-    pass
+    x_a1 = x(xi, xf, -1*math.sqrt(3/5))
+    x_a2 = x(xi, xf, 0) 
+    x_a3 = x(xi, xf, math.sqrt(3/5))
+    w1 = w3 = 5/9
+    w2 = 8/9
+    return ((xf-xi)/2)*(f(x_a1)*w1 + f(x_a2)*w2 + f(x_a3)*w3)
 
 def gauss_legendre_4p(f, xi, xf, k, delta_x):
-    pass
+    x_a1 = x(xi, xf, -1*math.sqrt( (15-math.sqrt(30))/35 ))
+    x_a2 = x(xi, xf, -1*math.sqrt( (15+math.sqrt(30))/35 )) 
+    x_a3 = x(xi, xf, math.sqrt( (15-math.sqrt(30))/35 ))
+    x_a4 = x(xi, xf, math.sqrt( (15+math.sqrt(30))/35 ))
+    w1 = w3 = (18 + math.sqrt(30))/36
+    w2 = w4 = (18 - math.sqrt(30))/36
+    return ((xf-xi)/2)*(f(x_a1)*w1 + f(x_a2)*w2 + f(x_a3)*w3 + f(x_a4)*w4)
 
 # ======================================= #
 #     Funções de integração numerica      # 
