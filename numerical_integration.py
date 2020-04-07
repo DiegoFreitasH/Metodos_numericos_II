@@ -29,6 +29,14 @@ def output_newton_cotes(output_to_file=True):
 
 def output_gauss_legendre(output_to_file=True):
     gl_2p = integrate(function, 0, 1, math.pow(10, -6), gauss_legendre_2p, output_to_file)
+    gl_3p = integrate(function, 0, 1, math.pow(10, -6), gauss_legendre_3p, output_to_file)
+    gl_4p = integrate(function, 0, 1, math.pow(10, -6), gauss_legendre_4p, output_to_file)
+
+    print(f"Gauss-Legendre 2 pontos = {gl_2p:.7f}")
+    print(f"Gauss-Legendre 3 pontos = {gl_3p:.7f}")
+    print(f"Gauss-Legendre 4 pontos = {gl_4p:.7f}")
+
+    print(f"Integral \t\t= {integral_precisa}")
 
 def main():
     # output_newton_cotes()
