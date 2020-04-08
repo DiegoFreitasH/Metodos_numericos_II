@@ -1,4 +1,5 @@
 import math
+import os
 # ======================================= #
 #       Fórmulas de newton-colos          #
 # ======================================= #
@@ -78,13 +79,15 @@ def integrate_n(f, a, b, n, subs_func = regra_trapezio):
     
     return I
 
-def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False):
+def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False, dir=""):
     I = 0
     N = 1
     erro = 1
     i = 0
     
-    if(debug): file = open(f"./out/{subs_func.__name__}.txt", "w")
+    if(debug):
+        path_to_output = os.path.join("./out", dir, f"{subs_func.__name__}.txt") 
+        file = open(path_to_output, "w")
 
     while erro > E:
         N *= 2
