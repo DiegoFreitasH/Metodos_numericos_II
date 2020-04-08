@@ -25,7 +25,7 @@ def output_newton_cotes(output_to_file=True, path="newton-cotes"):
     print(f"Polinomio 3 Aberta \t= {poli_3_aberta:.7f}")
     print(f"Polinomio 4 Fechada \t= {poli_4_fechada:.7f}")
     print(f"Polinomio 4 Aberta \t= {poli_4_aberta:.7f}")
-    print(f"Integral \t\t= {integral_precisa}")
+
 
 def output_gauss_legendre(output_to_file=True, path="gauss-legendre"):
     gl_2p = integrate(function, 0, 1, math.pow(10, -6), gauss_legendre_2p, output_to_file, path)
@@ -36,11 +36,10 @@ def output_gauss_legendre(output_to_file=True, path="gauss-legendre"):
     print(f"Gauss-Legendre 3 pontos = {gl_3p:.7f}")
     print(f"Gauss-Legendre 4 pontos = {gl_4p:.7f}")
 
-    print(f"Integral \t\t= {integral_precisa}")
-
 def main():
     output_newton_cotes()
     output_gauss_legendre()
+    print(f"Integral \t\t= {integral_precisa}")
 
 if __name__ == "__main__":
     main()
