@@ -6,6 +6,10 @@ def function(x):
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
 integral_precisa = 17.8764703
+'''Integrais da função de teste seguindo as especificações das integrais de
+Gauss-Hermite -> ∫ e^(-(x^2))f(x)dx, intervalo (-∞, +∞)
+Gauss-Laguerre -> ∫ e^(-x)f(x)dx, intervalo (0, +∞)
+Gauss-Chebyshev -> ∫ (1/sqrt(1-x^2))f(x)dx, intervalo (-1, +1) '''
 integral_precisa_gauss_hermite = 34.0277796460935
 integral_precisa_gauss_laguerre = 547.1745882352782
 integral_precisa_gauss_chebyshev = 46.05236716716156
