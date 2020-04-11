@@ -65,7 +65,7 @@ def gauss_legendre_4p(f, xi, xf, k, delta_x):
     return ((xf-xi)/2)*(f(x_a1)*w1 + f(x_a2)*w2 + f(x_a3)*w3 + f(x_a4)*w4)
 
 # ======================================= #
-#     Funções de integração numerica      # 
+#     Funções de integração numerica      #
 # ======================================= #
 
 def integrate_n(f, a, b, n, subs_func = regra_trapezio):
@@ -107,3 +107,50 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False, dir=""):
         file.write(f"Resultado: {I:.7f}\n")
         file.close()
     return I
+
+# ======================================= #
+#    Gauss-{Hermite,Laguerre,Chebyshev}   #
+# ======================================= #
+
+def gauss_hermite_n2(f):
+    x1 = -1/math.sqrt(2)
+    x2 = 1/math.sqrt(2)
+    w1 = w2 = math.sqrt(math.pi)/2
+    return w1*f(x1) + w2*f(x2)
+
+def gauss_hermite_n3(f):
+    x1 = -1*math.sqrt(3/2)
+    x2 = 0
+    x3 = math.sqrt(3/2)
+    w1 = w3 = math.sqrt(math.pi)/6
+    w2 = 2*math.sqrt(math.pi)/3
+    return w1*f(x1) + w2*f(x2) + w3*f(x3)
+
+def gauss_laguerre_n2(f):
+    x1 = 2 - math.sqrt(2)
+    x2 = 2 + math.sqrt(2)
+    w1 = (1/4) * (2 + math.sqrt(2))
+    w2 = (1/4) * (2 - math.sqrt(2))
+    return w1*f(x1) + w2*f(x2)
+
+def gauss_laguerre_n3(f):
+    x1 = 0.4157745568
+    x2 = 2.2942803603
+    x3 = 6.2899450829
+    w1 = 0.7110930099
+    w2 = 0.2785177336
+    w3 = 0.0103892565
+    return w1*f(x1) + w2*f(x2) + w3*f(x3)
+
+def gauss_chebyshev_n2(f):
+    x1 = -1/math.sqrt(2)
+    x2 = 1/math.sqrt(2)
+    w = math.pi/2
+    return w*f(x1) + w*f(x2)
+
+def gauss_chebyshev_n3(f):
+    x1 = -math.sqrt(3)/2
+    x2 = 0
+    x3 = math.sqrt(3)/2
+    w = math.pi/3
+    return w*f(x1) + w*f(x2) + w*f(x3)
