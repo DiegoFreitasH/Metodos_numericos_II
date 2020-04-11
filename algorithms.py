@@ -151,6 +151,17 @@ def gauss_laguerre_n3(f):
     w3 = 0.0103892565
     return w1*f(x1) + w2*f(x2) + w3*f(x3)
 
+def gauss_laguerre_n4(f): 
+    x1 = 0.322548
+    x2 = 1.74576
+    x3 = 4.53662
+    x4 = 9.39507
+    w1 = 0.603154
+    w2 = 0.357419
+    w3 = 0.0388879
+    w4 = 0.000539295
+    return w1*f(x1) + w2*f(x2) + w3*f(x3) + w4*f(x4)
+
 def gauss_chebyshev_n2(f):
     x1 = -1/math.sqrt(2)
     x2 = 1/math.sqrt(2)

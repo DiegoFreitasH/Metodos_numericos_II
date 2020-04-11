@@ -57,8 +57,10 @@ def output_gauss_hermite(f):
 def output_gauss_laguerre(f):
     gl_2 = gauss_laguerre_n2(f)
     gl_3 = gauss_laguerre_n3(f)
+    gl_4 = gauss_laguerre_n4(f)
     print(f"Gauss Laguerre 2 \t= {gl_2:.7f}")
     print(f"Gauss Laguerre 3 \t= {gl_3:.7f}")
+    print(f"Gauss Laguerre 4 \t= {gl_4:.7f}")
     print(f"Gauss Laguerre Precisa \t= {integral_precisa_gauss_laguerre:.7f}\n")
 
 def output_gauss_chebyshev(f):
