@@ -126,6 +126,15 @@ def gauss_hermite_n3(f):
     w2 = 2*math.sqrt(math.pi)/3
     return w1*f(x1) + w2*f(x2) + w3*f(x3)
 
+def gauss_hermite_n4(f):
+    x1 = -1*math.sqrt( (3+math.sqrt(6))/2 )
+    x2 = -1*math.sqrt( (3-math.sqrt(6))/2 )
+    x3 = math.sqrt( (3-math.sqrt(6))/2 )
+    x4 = math.sqrt( (3+math.sqrt(6))/2 )
+    w1 = w4 = (math.sqrt(9*math.pi) - math.sqrt(6*math.pi))/12
+    w2 = w3 = (math.sqrt(9*math.pi) + math.sqrt(6*math.pi))/12
+    return w1*f(x1) + w2*f(x2) + w3*f(x3) + w1*f(x4)
+
 def gauss_laguerre_n2(f):
     x1 = 2 - math.sqrt(2)
     x2 = 2 + math.sqrt(2)
@@ -154,3 +163,11 @@ def gauss_chebyshev_n3(f):
     x3 = math.sqrt(3)/2
     w = math.pi/3
     return w*f(x1) + w*f(x2) + w*f(x3)
+
+def gauss_chebyshev_n4(f):
+    x1 = -1*math.sqrt( (2+math.sqrt(2))/4 )
+    x2 = -1*math.sqrt( (2-math.sqrt(2))/4 )
+    x3 = math.sqrt( (2-math.sqrt(2))/4 )
+    x4 = math.sqrt( (2+math.sqrt(2))/4 )
+    w = math.pi/4
+    return w*f(x1) + w*f(x2) + w*f(x3) + w*f(x4)
