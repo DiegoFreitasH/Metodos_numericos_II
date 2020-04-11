@@ -48,8 +48,10 @@ def output_gauss_legendre(f, output_to_file=True, path="gauss-legendre"):
 def output_gauss_hermite(f):
     gh_2 = gauss_hermite_n2(f)
     gh_3 = gauss_hermite_n3(f)
+    gh_4 = gauss_hermite_n4(f)
     print(f"Gauss Hermite 2 \t= {gh_2:.7f}")
     print(f"Gauss Hermite 3 \t= {gh_3:.7f}")
+    print(f"Gauss Hermite 4 \t= {gh_4:.7f}")
     print(f"Gauss Hermite Precisa \t= {integral_precisa_gauss_hermite:.7f}\n")
 
 def output_gauss_laguerre(f):
@@ -62,8 +64,10 @@ def output_gauss_laguerre(f):
 def output_gauss_chebyshev(f):
     gc_2 = gauss_chebyshev_n2(f)
     gc_3 = gauss_chebyshev_n3(f)
+    gc_4 = gauss_chebyshev_n4(f)
     print(f"Gauss Chebyshev 2 \t= {gc_2:.7f}")
     print(f"Gauss Chebyshev 3 \t= {gc_3:.7f}")
+    print(f"Gauss Chebyshev 4 \t= {gc_4:.7f}")
     print(f"Gauss Chebyshev Precisa = {integral_precisa_gauss_chebyshev:.7f}\n")
 
 def main():
