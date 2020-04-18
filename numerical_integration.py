@@ -5,6 +5,15 @@ def function(x):
     '''Function f(x) to be integrated'''
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
+def function_1(x):
+    return 1/math.sqrt(x)
+
+def function_2(x):
+    return 1/((x*x)**(1/float(3)))
+
+def function_3(x):
+    return 1/(math.sqrt(4-x**2))
+
 integral_precisa = 17.8764703
 '''Integrais da função de teste seguindo as especificações das integrais de
 Gauss-Hermite -> ∫ e^(-(x^2))f(x)dx, intervalo (-∞, +∞)
@@ -73,11 +82,19 @@ def output_gauss_chebyshev(f):
     print(f"Gauss Chebyshev Precisa = {integral_precisa_gauss_chebyshev:.7f}\n")
 
 def main():
-    output_newton_cotes(function)
-    output_gauss_legendre(function)
-    output_gauss_hermite(function)
-    output_gauss_laguerre(function)
-    output_gauss_chebyshev(function)
+    # output_newton_cotes(function)
+    # output_gauss_legendre(function)
+    # output_gauss_hermite(function)
+    # output_gauss_laguerre(function)
+    # output_gauss_chebyshev(function)
+    # expo_simples = exponencial_simples(function_1, 0, 1, math.pow(10, -7))
+    # expo_simples = exponencial_simples(function_2, -1, 1, math.pow(10, -7))
+    expo_simples = exponencial_simples(function_3, -2, 0, math.pow(10, -8))
+    # expo_dupla = exponencial_dupla(function_1, 0, 1, math.pow(10, -7))
+    # expo_dupla = exponencial_dupla(function_2, -1, 1, math.pow(10, -7))
+    expo_dupla = exponencial_dupla(function_3, -2, 0, math.pow(10, -7))
+    print(f"Exponencial Simples \t= {expo_simples}")
+    print(f"Exponencial Dupla \t= {expo_dupla}")
 
 if __name__ == "__main__":
     main()

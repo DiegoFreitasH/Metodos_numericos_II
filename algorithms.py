@@ -16,7 +16,7 @@ def regra_simpson(f, xi, xf, k, delta_x):
     return (h/3)*(f(xi) + 4*f(xi+h) + f(xf))
 
 def regra_milne(f, xi, xf, k, delta_x): 
-    h = delta_x / 4
+    h = delta_x / 4.0
     return (delta_x/3) * (2*f(xi + h) - f(xi + 2*h) + 2*f(xi + 3*h))
 
 def regra_simpson_3_8(f, xi, xf, k, delta_x):
@@ -68,9 +68,9 @@ def gauss_legendre_4p(f, xi, xf, k, delta_x):
 #     Funções de integração numerica      #
 # ======================================= #
 
-def integrate_n(f, a, b, n, subs_func = regra_trapezio):
+def integrate_n(f, a, b, n, subs_func=regra_trapezio):
     I = 0
-    h = (b-a)/n
+    h = float((b-a)/float(n))
 
     for k in range(n):
         x0 = a + k*h
@@ -89,7 +89,7 @@ def integrate(f, a, b, E, subs_func=regra_trapezio, debug=False, dir=""):
         path_to_output = os.path.join("./out", dir, f"{subs_func.__name__}.txt") 
         file = open(path_to_output, "w")
 
-    while erro > E:
+    while erro >= E:
         N *= 2
         In = integrate_n(f, a, b, N, subs_func)
         erro = abs((In - I)/In)
@@ -182,3 +182,51 @@ def gauss_chebyshev_n4(f):
     x4 = math.sqrt( (2+math.sqrt(2))/4 )
     w = math.pi/4
     return w*f(x1) + w*f(x2) + w*f(x3) + w*f(x4)
+
+# ======================================= #
+#        Problema de singularidade        #
+# ======================================= #
+
+def x_expo_simples(a, b, s):
+    x = ((a+b)/2.0) + (((b-a)/2.0)*math.tanh(s))
+    return x
+
+def ds_expo_simples(a, b, s):
+    return (b-a)/2 * (1/(math.cosh(s)**2))
+
+def x_expo_dupla(a, b, s):
+    return ((a+b)/2.0) + ((b-a)/2.0 * math.tanh(math.pi/2 * math.sinh(s)))
+
+def ds_expo_dupla(a, b, s):
+    return (b-a)/2.0 * (math.pi/2 * math.cosh(s)/math.pow(math.cosh(math.pi/2*math.sinh(s)),2.0))
+
+
+def exponencial_simples(f, a, b, E):
+    erro = 1
+    I = 0
+    c = 1
+
+    def g(x):
+        return f(x_expo_simples(a, b, x)) * ds_expo_simples(a, b, x)
+    
+    while erro >= E and c <= 18:
+        In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
+        erro = abs(In - I)
+        I = In
+        c += 1
+    return I
+
+def exponencial_dupla(f, a, b, E):
+    erro = 1
+    I = 0
+    c = 1
+    
+    def g(x):
+        return f(x_expo_dupla(a, b, x)) * ds_expo_dupla(a, b, x)
+    
+    while erro >= E and c <= 3:
+        In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
+        erro = abs(In - I)
+        I = In
+        c += .5
+    return I
