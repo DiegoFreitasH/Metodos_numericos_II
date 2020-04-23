@@ -6,17 +6,17 @@ def function(x):
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
 # Funções para o problema de singularidade
-# def function_1(x):
-#     '''Função de exemplo da aula 13'''
-#     return 1/math.sqrt(x)
-
 def function_1(x):
     '''Função 1 da tarefa da aula 14'''
     return 1/((x*x)**(1/3.0))
 
+function_1_precisa = 6.0
+
 def function_2(x):
     '''Função 2 da tarefa da aula 14'''
     return 1/(math.sqrt(4-x**2))
+
+function_2_precisa = math.pi / 2.0
 
 integral_precisa = 17.8764703
 '''Integrais da função de teste seguindo as especificações das integrais de
@@ -37,6 +37,7 @@ def output_newton_cotes(f, output_to_file=True, path="newton-cotes"):
     poli_4_fechada = integrate(f, 0, 1, math.pow(10, -6), regra_poli_4_fechada, output_to_file, path)
     poli_4_aberta = integrate(f, 0, 1, math.pow(10, -6), regra_poli_4_aberta, output_to_file, path)
 
+    print(f"{'-'*6}Formulas de Newton-Cotes{'-'*6}")
     print(f"Trapezio Fechado \t= {trapezio:.7f}")
     print(f"Trapezio Aberto \t= {trapezio_aberto:.7f}")
     print(f"Simpson 1/8 \t\t= {simpson:.7f}")
@@ -53,6 +54,7 @@ def output_gauss_legendre(f, output_to_file=True, path="gauss-legendre"):
     gl_3p = integrate(f, 0, 1, math.pow(10, -6), gauss_legendre_3p, output_to_file, path)
     gl_4p = integrate(f, 0, 1, math.pow(10, -6), gauss_legendre_4p, output_to_file, path)
 
+    print(f"{'-'*6}Quadratura de Gauss-Legendre{'-'*6}")
     print(f"Gauss-Legendre 2 pontos = {gl_2p:.7f}")
     print(f"Gauss-Legendre 3 pontos = {gl_3p:.7f}")
     print(f"Gauss-Legendre 4 pontos = {gl_4p:.7f}")
@@ -62,6 +64,8 @@ def output_gauss_hermite(f):
     gh_2 = gauss_hermite_n2(f)
     gh_3 = gauss_hermite_n3(f)
     gh_4 = gauss_hermite_n4(f)
+
+    print(f"{'-'*6}Quadratura de Gauss-Hermite{'-'*6}")
     print(f"Gauss Hermite 2 \t= {gh_2:.7f}")
     print(f"Gauss Hermite 3 \t= {gh_3:.7f}")
     print(f"Gauss Hermite 4 \t= {gh_4:.7f}")
@@ -71,6 +75,8 @@ def output_gauss_laguerre(f):
     gl_2 = gauss_laguerre_n2(f)
     gl_3 = gauss_laguerre_n3(f)
     gl_4 = gauss_laguerre_n4(f)
+
+    print(f"{'-'*6}Quadratura de Gauss-Leguerre{'-'*6}")
     print(f"Gauss Laguerre 2 \t= {gl_2:.7f}")
     print(f"Gauss Laguerre 3 \t= {gl_3:.7f}")
     print(f"Gauss Laguerre 4 \t= {gl_4:.7f}")
@@ -80,6 +86,8 @@ def output_gauss_chebyshev(f):
     gc_2 = gauss_chebyshev_n2(f)
     gc_3 = gauss_chebyshev_n3(f)
     gc_4 = gauss_chebyshev_n4(f)
+
+    print(f"{'-'*6}Quadratura de Gauss-Chebyshev{'-'*6}")
     print(f"Gauss Chebyshev 2 \t= {gc_2:.7f}")
     print(f"Gauss Chebyshev 3 \t= {gc_3:.7f}")
     print(f"Gauss Chebyshev 4 \t= {gc_4:.7f}")
@@ -90,19 +98,22 @@ def output_singularidades(f_1, f_2):
     expo_dupla_1 = 2 * exponencial_dupla(f_1, 0, 1, pow(10, -7))
     expo_simples_2 = exponencial_simples(f_2, -2, 0, pow(10, -7))
     expo_dupla_2 = exponencial_dupla(f_2, -2, 0, pow(10, -7))
+
     print(f"{'-'*6}Integrais com Singularidade{'-'*6}")
     print(f"Exponencial Simples da Função 1 = {expo_simples_1}")
     print(f"Exponencial Dupla da Função 1 \t= {expo_dupla_1}")
+    print(f"Integral Precisa \t\t= {function_1_precisa}")
     print(f"Exponencial Simples da Função 2 = {expo_simples_2}")
     print(f"Exponencial Dupla da Função 2 \t= {expo_dupla_2}")
+    print(f"Integral Precisa \t\t= {function_2_precisa}")
     
 
 def main():
-    # output_newton_cotes(function)
-    # output_gauss_legendre(function)
-    # output_gauss_hermite(function)
-    # output_gauss_laguerre(function)
-    # output_gauss_chebyshev(function)
+    output_newton_cotes(function)
+    output_gauss_legendre(function)
+    output_gauss_hermite(function)
+    output_gauss_laguerre(function)
+    output_gauss_chebyshev(function)
     output_singularidades(function_1, function_2)
 
 if __name__ == "__main__":
