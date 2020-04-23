@@ -100,12 +100,12 @@ def output_singularidades(f_1, f_2):
     expo_dupla_2 = exponencial_dupla(f_2, -2, 0, pow(10, -7))
 
     print(f"{'-'*6}Integrais com Singularidade{'-'*6}")
-    print(f"Exponencial Simples da Função 1 = {expo_simples_1}")
-    print(f"Exponencial Dupla da Função 1 \t= {expo_dupla_1}")
-    print(f"Integral Precisa \t\t= {function_1_precisa}")
-    print(f"Exponencial Simples da Função 2 = {expo_simples_2}")
-    print(f"Exponencial Dupla da Função 2 \t= {expo_dupla_2}")
-    print(f"Integral Precisa \t\t= {function_2_precisa}")
+    print(f"Exponencial Simples da Função 1 = {expo_simples_1:.7f}")
+    print(f"Exponencial Dupla da Função 1 \t= {expo_dupla_1:.7f}")
+    print(f"Integral Precisa 1 \t\t= {function_1_precisa:.7f}")
+    print(f"Exponencial Simples da Função 2 = {expo_simples_2:.7f}")
+    print(f"Exponencial Dupla da Função 2 \t= {expo_dupla_2:.7f}")
+    print(f"Integral Precisa 2 \t\t= {function_2_precisa:.7f}")
     
 
 def main():
