@@ -210,7 +210,7 @@ def exponencial_simples(f, a, b, E):
         return f(x_expo_simples(a, b, x)) * ds_expo_simples(a, b, x)
     
     while erro >= E and c <= 18:
-        In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
+        In = integrate(g, -c, c, 10**(-3), subs_func=gauss_legendre_4p)
         erro = abs(In - I)
         I = In
         c += 1

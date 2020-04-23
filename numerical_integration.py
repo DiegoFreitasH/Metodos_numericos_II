@@ -5,13 +5,17 @@ def function(x):
     '''Function f(x) to be integrated'''
     return ((math.sin(2*x) + 4*(x**2) + 3*x)**2)
 
+# Funções para o problema de singularidade
+# def function_1(x):
+#     '''Função de exemplo da aula 13'''
+#     return 1/math.sqrt(x)
+
 def function_1(x):
-    return 1/math.sqrt(x)
+    '''Função 1 da tarefa da aula 14'''
+    return 1/((x*x)**(1/3.0))
 
 def function_2(x):
-    return 1/((x*x)**(1/float(3)))
-
-def function_3(x):
+    '''Função 2 da tarefa da aula 14'''
     return 1/(math.sqrt(4-x**2))
 
 integral_precisa = 17.8764703
@@ -81,20 +85,25 @@ def output_gauss_chebyshev(f):
     print(f"Gauss Chebyshev 4 \t= {gc_4:.7f}")
     print(f"Gauss Chebyshev Precisa = {integral_precisa_gauss_chebyshev:.7f}\n")
 
+def output_singularidades(f_1, f_2):
+    expo_simples_1 = 2 * exponencial_simples(f_1, 0, 1, pow(10, -7))
+    expo_dupla_1 = 2 * exponencial_dupla(f_1, 0, 1, pow(10, -7))
+    expo_simples_2 = exponencial_simples(f_2, -2, 0, pow(10, -7))
+    expo_dupla_2 = exponencial_dupla(f_2, -2, 0, pow(10, -7))
+    print(f"{'-'*6}Integrais com Singularidade{'-'*6}")
+    print(f"Exponencial Simples da Função 1 = {expo_simples_1}")
+    print(f"Exponencial Dupla da Função 1 \t= {expo_dupla_1}")
+    print(f"Exponencial Simples da Função 2 = {expo_simples_2}")
+    print(f"Exponencial Dupla da Função 2 \t= {expo_dupla_2}")
+    
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
     # output_gauss_hermite(function)
     # output_gauss_laguerre(function)
     # output_gauss_chebyshev(function)
-    # expo_simples = exponencial_simples(function_1, 0, 1, math.pow(10, -7))
-    # expo_simples = exponencial_simples(function_2, -1, 1, math.pow(10, -7))
-    expo_simples = exponencial_simples(function_3, -2, 0, math.pow(10, -8))
-    # expo_dupla = exponencial_dupla(function_1, 0, 1, math.pow(10, -7))
-    # expo_dupla = exponencial_dupla(function_2, -1, 1, math.pow(10, -7))
-    expo_dupla = exponencial_dupla(function_3, -2, 0, math.pow(10, -7))
-    print(f"Exponencial Simples \t= {expo_simples}")
-    print(f"Exponencial Dupla \t= {expo_dupla}")
+    output_singularidades(function_1, function_2)
 
 if __name__ == "__main__":
     main()
