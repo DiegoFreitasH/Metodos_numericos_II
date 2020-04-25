@@ -209,6 +209,7 @@ def exponencial_simples(f, a, b, E):
     def g(x):
         return f(x_expo_simples(a, b, x)) * ds_expo_simples(a, b, x)
     
+    # c é no máximo 19 para evitar o erro de precisão por conta do limite de ponto flutuante
     while erro >= E and c <= 19:
         In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
         erro = abs(In - I)
@@ -224,6 +225,7 @@ def exponencial_dupla(f, a, b, E):
     def g(x):
         return f(x_expo_dupla(a, b, x)) * ds_expo_dupla(a, b, x)
     
+    # c é no máximo 3 para evitar o erro de precisão por conta do limite de ponto flutuante
     while erro >= E and c <= 3:
         In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
         erro = abs(In - I)
