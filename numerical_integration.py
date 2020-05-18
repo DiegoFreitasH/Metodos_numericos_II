@@ -106,7 +106,22 @@ def output_singularidades(f_1, f_2):
     print(f"Exponencial Simples da Função 2 = {expo_simples_2:.7f}")
     print(f"Exponencial Dupla da Função 2 \t= {expo_dupla_2:.7f}")
     print(f"Integral Precisa 2 \t\t= {function_2_precisa:.7f}")
+
+def output_surface_area():
+    w_list = [5/9, 8/9, 5/9]
+    x_list = [-math.sqrt(3/5), 0, math.sqrt(3/5)]
+
+    def g(x, y):
+        return math.sqrt(math.pow((8*(1+x)),2) + 1) * (1+x)
     
+    I = 0
+    for i, b in enumerate(x_list):
+        for j, a in enumerate(x_list):
+            I += w_list[j]*w_list[i]*g(a,b)
+    I *= 400*math.pi
+
+    print(f"\n{'-'*6}Calculo de área da superfice{'-'*6}")
+    print(f"Area da Surperfice problema 2 \t= {I:.7f}")
 
 def main():
     output_newton_cotes(function)
@@ -115,6 +130,7 @@ def main():
     output_gauss_laguerre(function)
     output_gauss_chebyshev(function)
     output_singularidades(function_1, function_2)
+    output_surface_area()
 
 if __name__ == "__main__":
     main()
