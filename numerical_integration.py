@@ -27,15 +27,15 @@ integral_precisa_gauss_hermite = 34.0277796460935
 integral_precisa_gauss_laguerre = 547.1745882352782
 integral_precisa_gauss_chebyshev = 46.05236716716156
 
-def output_newton_cotes(f, output_to_file=True, path="newton-cotes"):
-    trapezio = integrate(f, 0, 1, math.pow(10, -6), regra_trapezio, output_to_file, path)
-    trapezio_aberto = integrate(f, 0, 1, math.pow(10, -6), regra_trapezio_aberto, output_to_file, path)
-    simpson = integrate(f, 0, 1, math.pow(10, -6), regra_simpson, output_to_file, path)
-    milne = integrate(f, 0, 1, math.pow(10, -6), regra_milne, output_to_file, path)
-    simpson_3_8 = integrate(f, 0, 1, math.pow(10, -6), regra_simpson_3_8, output_to_file, path)
-    poli_3_aberta = integrate(f, 0, 1, math.pow(10, -6), regra_poli_3_aberta, output_to_file, path)
-    poli_4_fechada = integrate(f, 0, 1, math.pow(10, -6), regra_poli_4_fechada, output_to_file, path)
-    poli_4_aberta = integrate(f, 0, 1, math.pow(10, -6), regra_poli_4_aberta, output_to_file, path)
+def output_newton_cotes(function, output_to_file=True, path="newton-cotes"):
+    trapezio = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio, output_to_file, path)
+    trapezio_aberto = integrate(function, 0, 1, math.pow(10, -6), regra_trapezio_aberto, output_to_file, path)
+    simpson = integrate(function, 0, 1, math.pow(10, -6), regra_simpson, output_to_file, path)
+    milne = integrate(function, 0, 1, math.pow(10, -6), regra_milne, output_to_file, path)
+    simpson_3_8 = integrate(function, 0, 1, math.pow(10, -6), regra_simpson_3_8, output_to_file, path)
+    poli_3_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_3_aberta, output_to_file, path)
+    poli_4_fechada = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_fechada, output_to_file, path)
+    poli_4_aberta = integrate(function, 0, 1, math.pow(10, -6), regra_poli_4_aberta, output_to_file, path)
 
     print(f"{'-'*6}Formulas de Newton-Cotes{'-'*6}")
     print(f"Trapezio Fechado \t= {trapezio:.7f}")
@@ -111,26 +111,51 @@ def output_surface_area():
     w_list = [5/9, 8/9, 5/9]
     x_list = [-math.sqrt(3/5), 0, math.sqrt(3/5)]
 
-    def g(x, y):
-        return math.sqrt(math.pow((8*(1+x)),2) + 1) * (1+x)
+    def g(r, s):
+        alpha = (1 + r) / 2.0
+        beta = (1 + s) * math.pi
+        x = 40 * alpha * math.cos(beta)
+        y = 40 * alpha * math.sin(beta)
+        return math.sqrt((0.4*x)**2 + (0.4*y)**2 + 1) * 1600 *  alpha * math.pi/2
     
     I = 0
     for i, b in enumerate(x_list):
         for j, a in enumerate(x_list):
             I += w_list[j]*w_list[i]*g(a,b)
-    I *= 400*math.pi
 
     print(f"\n{'-'*6}Calculo de área da superfice{'-'*6}")
     print(f"Area da Surperfice problema 2 \t= {I:.7f}")
 
+def output_volume():
+    w_list = [5.0/9, 8.0/9, 5.0/9]
+    x_list = [-math.sqrt(3/5), 0, math.sqrt(3/5)]
+
+    def g(r, s):
+        alpha = (r + 1) / 2.0
+        beta = (s + 1) * math.pi/4
+        x = 40 * alpha * math.cos(beta) 
+        y = 20 * alpha * math.sin(beta)
+        return 0.2 * (x**2 - y**2) * 800 * alpha * math.pi/8
+   
+    I = 0
+    for i, b in enumerate(x_list):
+        for j, a in enumerate(x_list):
+            value = w_list[j]*w_list[i]*g(a,b)
+            I += value
+    
+    I *= 4
+    print(f"\n{'-'*6}Calculo do Volume{'-'*6}")
+    print(f"Volume do Solido problema 2 \t= {I:.7f}")
+
 def main():
-    output_newton_cotes(function)
-    output_gauss_legendre(function)
-    output_gauss_hermite(function)
-    output_gauss_laguerre(function)
-    output_gauss_chebyshev(function)
-    output_singularidades(function_1, function_2)
+    # output_newton_cotes(function)
+    # output_gauss_legendre(function)
+    # output_gauss_hermite(function)
+    # output_gauss_laguerre(function)
+    # output_gauss_chebyshev(function)
+    # output_singularidades(function_1, function_2)
     output_surface_area()
+    output_volume()
 
 if __name__ == "__main__":
     main()
