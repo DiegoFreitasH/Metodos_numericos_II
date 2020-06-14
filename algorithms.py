@@ -232,3 +232,122 @@ def exponencial_dupla(f, a, b, E):
         I = In
         c += .5
     return I
+
+
+# ======================================= #
+#        Autovalores e Autovetores        #
+# ======================================= #
+
+def normalizar(v):
+    div = 0.0
+    out = []
+    for n in v:
+        div += n**2
+    div = math.sqrt(div)
+    for n in v:
+        out.append(n/div)
+    return out
+
+def mult_vector(v0, v1):
+    out = 0
+    for n,m in zip(v0,v1):
+        out += n*m
+    return out
+
+def mult_matrix(A, v):
+    out = []
+    for row in A:
+        out.append(mult_vector(row,v))
+    return out;
+
+def potencia_regular(A, v0, e):
+    gamma_novo = 0
+    vk_novo = v0
+    error = 10
+    while(error > e):
+        gamma_velho = gamma_novo
+        vk_velho = vk_novo
+        x = normalizar(vk_velho)
+        vk_novo = mult_matrix(A, x)
+        gamma_novo = mult_vector(x, vk_novo)
+        error = abs((gamma_novo - gamma_velho)/gamma_novo)
+    
+    print(f'Autvalor: {gamma_novo:.7f}\nAutvetor:{x}')
+
+def print_matrix(matrix):
+    n = len(matrix)
+    for i in range(n):
+        for j in range(n):
+            print(f'{matrix[i][j]:.2f}', end=' ')
+        print()
+
+def decomLU(A):
+    n = len(A)
+    L = [[0 for x in range(n)] for y in range(n)]
+    U = [[0 for x in range(n)] for y in range(n)]
+    for i in range(n):
+        
+        for k in range(i,n):
+            soma = 0
+            for j in range(i):
+                soma += (L[i][j] * U[j][i])
+            U[i][k] = A[i][k] - soma
+            if(U[i][i] == 0):
+                raise ZeroDivisionError
+        
+        for k in range(i,n):
+            if(i == k): 
+                L[i][i] = 1
+            else:
+                soma = 0
+                for j in range(i):
+                    soma += L[k][j] * U[i][j]
+                L[k][i] = (A[k][i] - soma) / U[i][i]
+    return L, U
+
+def subs_sucessivas(matrix, vector):
+    n = len(matrix)
+    out = [0 for i in range(n)]
+    soma = 0
+    out[0] = vector[0] / matrix[0][0]
+
+    for i in range(1, n):
+        soma = 0
+        for j in range(0, i):
+            soma += matrix[i][j] * vector[j]
+        out[i] = (vector[i] - soma) / matrix[i][i]
+    
+    return out
+
+def subs_retroativas(matrix, vector):
+    n = len(matrix)
+    out = [0 for i in range(n)]
+    soma = 0
+    out[n-1] = vector[n-1]/matrix[n-1][n-1]
+    for i in range(n-2, -1, -1):
+        soma = 0
+        for j in range(i+1, n):
+            soma += matrix[i][j] * vector[j]
+        out[i] = (vector[i] - soma) / matrix[i][i]
+    
+    return out
+
+
+def solveLU(L, U, x):
+    y = subs_sucessivas(L, x)
+    return subs_retroativas(U, y)
+
+def potencia_inversa(A, v0, e):
+    gamma_novo = 0
+    vk_novo = v0
+    error = 10
+    L, U = decomLU(A)
+    while(error > e):
+        gamma_velho = gamma_novo
+        vk_velho = vk_novo
+        x = normalizar(vk_velho)
+        vk_novo = solveLU(L, U, x)
+        gamma_novo = mult_vector(x, vk_novo)
+        error = abs((gamma_novo - gamma_velho)/gamma_novo)
+    gamma = 1/gamma_novo
+    print(f'Autvalor: {gamma:.7f}\nAutvetor:{x}')

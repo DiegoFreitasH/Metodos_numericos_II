@@ -154,8 +154,17 @@ def main():
     # output_gauss_laguerre(function)
     # output_gauss_chebyshev(function)
     # output_singularidades(function_1, function_2)
-    output_surface_area()
-    output_volume()
+    # output_surface_area()
+    # output_volume()
+    A = [
+        [5, 2, 1],
+        [2, 3, 1],
+        [1, 1, 2]
+    ]
+    v0 = [1, 1, 1]
+    # decomLU(A)
+    potencia_inversa(A, v0, 10**-7)
+    # potencia_regular(A, v0, 10**-7)
 
 if __name__ == "__main__":
     main()
