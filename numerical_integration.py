@@ -147,6 +147,48 @@ def output_volume():
     print(f"\n{'-'*6}Calculo do Volume{'-'*6}")
     print(f"Volume do Solido problema 2 \t= {I:.7f}")
 
+def output_potencia_regular():
+    A1 = [
+        [5, 2, 1],
+        [2, 3, 1],
+        [1, 1, 2]
+    ]
+    A2 = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+    v0 = [1, 1, 1]
+    print(f'\nPotencia Regular')
+    potencia_regular(A1, v0, 10**-7)
+    potencia_regular(A2, [1,1,1,1,1], 10**-7)
+ 
+
+def output_potencia_inversa():
+    A1 = [
+        [5, 2, 1],
+        [2, 3, 1],
+        [1, 1, 2]
+    ]
+    A2 = [
+        [-14, 1, -2],
+        [1, -1, 1],
+        [-2, 1, -11]
+    ]
+    A3 = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+    v0 = [1, 1, 1]
+    print(f'\nPotencia Inversa')
+    potencia_inversa(A1, v0, 10**-7)
+    # potencia_inversa(A2, v0, 10**-7)
+    potencia_inversa(A3, [1,1,1,1,1], 10**-7)
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -156,15 +198,8 @@ def main():
     # output_singularidades(function_1, function_2)
     # output_surface_area()
     # output_volume()
-    A = [
-        [5, 2, 1],
-        [2, 3, 1],
-        [1, 1, 2]
-    ]
-    v0 = [1, 1, 1]
-    # decomLU(A)
-    potencia_inversa(A, v0, 10**-7)
-    # potencia_regular(A, v0, 10**-7)
+    output_potencia_regular()
+    output_potencia_inversa()
 
 if __name__ == "__main__":
     main()

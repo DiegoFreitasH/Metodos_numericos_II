@@ -324,6 +324,7 @@ def subs_retroativas(matrix, vector):
     out = [0 for i in range(n)]
     soma = 0
     out[n-1] = vector[n-1]/matrix[n-1][n-1]
+    
     for i in range(n-2, -1, -1):
         soma = 0
         for j in range(i+1, n):
@@ -338,14 +339,17 @@ def solveLU(L, U, x):
     return subs_retroativas(U, y)
 
 def potencia_inversa(A, v0, e):
+    
+    L, U = decomLU(A)
     gamma_novo = 0
     vk_novo = v0
     error = 10
-    L, U = decomLU(A)
+    
     while(error > e):
         gamma_velho = gamma_novo
         vk_velho = vk_novo
         x = normalizar(vk_velho)
+
         vk_novo = solveLU(L, U, x)
         gamma_novo = mult_vector(x, vk_novo)
         error = abs((gamma_novo - gamma_velho)/gamma_novo)
