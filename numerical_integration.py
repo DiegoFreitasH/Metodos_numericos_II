@@ -161,10 +161,15 @@ def output_potencia_regular():
         [1, 2, 2, 4, 5]
     ]
     v0 = [1, 1, 1]
-    print(f'\nPotencia Regular')
-    potencia_regular(A1, v0, 10**-7)
-    potencia_regular(A2, [1,1,1,1,1], 10**-7)
- 
+    autovalor_A1, autovetor_A1 = potencia_regular(A1, v0, 10**-7)
+    autovalor_A2, autovetor_A2 = potencia_regular(A2, [1,1,1,1,1], 10**-7)
+    
+    print(f"\n{'-'*6}Potencia Regular{'-'*6}")
+    print(f'Autovalor Dominante de A1 = {autovalor_A1}')
+    print(f'Autovetor Dominante de A1 = {autovetor_A1}\n')
+    print(f'Autovalor Dominante de A2 = {autovalor_A2}')
+    print(f'Autovetor Dominante de A2 = {autovetor_A2}')
+    
 
 def output_potencia_inversa():
     A1 = [
@@ -185,10 +190,18 @@ def output_potencia_inversa():
         [1, 2, 2, 4, 5]
     ]
     v0 = [1, 1, 1]
-    print(f'\nPotencia Inversa')
-    potencia_inversa(A1, v0, 10**-7)
-    potencia_inversa(A2, v0, 10**-7)
-    potencia_inversa(A3, [1,1,1,1,1], 10**-7)
+    autovalor_A1, autovetor_A1 = potencia_inversa(A1, v0, 10**-7)
+    autovalor_A2, autovetor_A2 = potencia_inversa(A2, v0, 10**-7)
+    autovalor_A3, autovetor_A3 = potencia_inversa(A3, [1,1,1,1,1], 10**-7)
+    
+    print(f"\n{'-'*6}Potencia Inversa{'-'*6}")
+    print(f'Menor Autovalor de A1 = {autovalor_A1}')
+    print(f'Menor Autovetor de A1 = {autovetor_A1}\n')
+    print(f'Menor Autovalor de A2 = {autovalor_A2}')
+    print(f'Menor Autovetor de A2 = {autovetor_A2}\n')
+    print(f'Menor Autovalor de A3 = {autovalor_A3}')
+    print(f'Menor Autovetor de A3 = {autovetor_A3}\n')
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)

@@ -260,20 +260,6 @@ def mult_matrix(A, v):
         out.append(mult_vector(row,v))
     return out;
 
-def potencia_regular(A, v0, e):
-    gamma_novo = 0
-    vk_novo = v0
-    error = 10
-    while(error > e):
-        gamma_velho = gamma_novo
-        vk_velho = vk_novo
-        x = normalizar(vk_velho)
-        vk_novo = mult_matrix(A, x)
-        gamma_novo = mult_vector(x, vk_novo)
-        error = abs((gamma_novo - gamma_velho)/gamma_novo)
-    
-    print(f'Autvalor: {gamma_novo:.7f}\nAutvetor:{x}')
-
 def print_matrix(matrix):
     n = len(matrix)
     for i in range(n):
@@ -333,10 +319,24 @@ def subs_retroativas(matrix, vector):
     
     return out
 
-
 def solveLU(L, U, x):
     y = subs_sucessivas(L, x)
     return subs_retroativas(U, y)
+
+
+def potencia_regular(A, v0, e):
+    gamma_novo = 0
+    vk_novo = v0
+    error = 10
+    while(error > e):
+        gamma_velho = gamma_novo
+        vk_velho = vk_novo
+        x = normalizar(vk_velho)
+        vk_novo = mult_matrix(A, x)
+        gamma_novo = mult_vector(x, vk_novo)
+        error = abs((gamma_novo - gamma_velho)/gamma_novo)
+    
+    return gamma_novo, x
 
 def potencia_inversa(A, v0, e):
     
@@ -354,4 +354,5 @@ def potencia_inversa(A, v0, e):
         gamma_novo = mult_vector(x, vk_novo)
         error = abs((gamma_novo - gamma_velho)/gamma_novo)
     gamma = 1/gamma_novo
-    print(f'Autvalor: {gamma:.7f}\nAutvetor:{x}')
+
+    return gamma, x
