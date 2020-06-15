@@ -290,7 +290,7 @@ def decomLU(A):
         for k in range(i,n):
             soma = 0
             for j in range(i):
-                soma += (L[i][j] * U[j][i])
+                soma += (L[i][j] * U[j][k])
             U[i][k] = A[i][k] - soma
             if(U[i][i] == 0):
                 raise ZeroDivisionError
@@ -301,7 +301,7 @@ def decomLU(A):
             else:
                 soma = 0
                 for j in range(i):
-                    soma += L[k][j] * U[i][j]
+                    soma += L[k][j] * U[j][i]
                 L[k][i] = (A[k][i] - soma) / U[i][i]
     return L, U
 
