@@ -356,3 +356,12 @@ def potencia_inversa(A, v0, e):
     gamma = 1/gamma_novo
 
     return gamma, x
+
+def potencia_com_deslocamento(A, v0, e, u):
+    n = len(A)
+    A_temp = A[:]
+    for i in range(n):
+        A_temp[i][i] -= u
+    gamma, x = potencia_inversa(A_temp, v0, e)
+    gamma += u
+    return gamma, x

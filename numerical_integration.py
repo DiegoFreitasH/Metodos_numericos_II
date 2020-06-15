@@ -202,6 +202,40 @@ def output_potencia_inversa():
     print(f'Menor Autovalor de A3 = {autovalor_A3}')
     print(f'Menor Autovetor de A3 = {autovetor_A3}\n')
 
+def output_potencia_com_deslocamento(u1, u2, u3):
+    A1 = [
+        [5, 2, 1],
+        [2, 3, 1],
+        [1, 1, 2]
+    ]
+    A2 = [
+        [-14, 1, -2],
+        [1, -1, 1],
+        [-2, 1, -11]
+    ]
+    A3 = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+    v0 = [1, 1, 1]
+    autovalor_A1, autovetor_A1 = potencia_com_deslocamento(A1, v0, 10**-7, u1)
+    autovalor_A2, autovetor_A2 = potencia_com_deslocamento(A2, v0, 10**-7, u2)
+    autovalor_A3, autovetor_A3 = potencia_com_deslocamento(A3, [1,1,1,1,1], 10**-7, u3)
+    
+    print(f"\n{'-'*6}Potencia Com Deslocamento{'-'*6}")
+    print(f'Autovalor de A1 = {autovalor_A1}')
+    print(f'Autovetor de A1 = {autovetor_A1}')
+    print(f'Deslocamento de A1 = {u1}\n')
+    print(f'Autovalor de A2 = {autovalor_A2}')
+    print(f'Autovetor de A2 = {autovetor_A2}')
+    print(f'Deslocamento de A2 = {u2}\n')
+    print(f'Autovalor de A3 = {autovalor_A3}')
+    print(f'Autovetor de A3 = {autovetor_A3}')
+    print(f'Deslocamento de A3 = {u3}\n')
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -213,6 +247,7 @@ def main():
     # output_volume()
     output_potencia_regular()
     output_potencia_inversa()
+    output_potencia_com_deslocamento(1, 1, 1)
 
 if __name__ == "__main__":
     main()
