@@ -313,8 +313,8 @@ def subs_sucessivas(matrix, vector):
 
     for i in range(1, n):
         soma = 0
-        for j in range(0, i):
-            soma += matrix[i][j] * vector[j]
+        for j in range(i):
+            soma += matrix[i][j] * out[j]
         out[i] = (vector[i] - soma) / matrix[i][i]
     
     return out
@@ -328,7 +328,7 @@ def subs_retroativas(matrix, vector):
     for i in range(n-2, -1, -1):
         soma = 0
         for j in range(i+1, n):
-            soma += matrix[i][j] * vector[j]
+            soma += matrix[i][j] * out[j]
         out[i] = (vector[i] - soma) / matrix[i][i]
     
     return out

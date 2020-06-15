@@ -187,7 +187,7 @@ def output_potencia_inversa():
     v0 = [1, 1, 1]
     print(f'\nPotencia Inversa')
     potencia_inversa(A1, v0, 10**-7)
-    # potencia_inversa(A2, v0, 10**-7)
+    potencia_inversa(A2, v0, 10**-7)
     potencia_inversa(A3, [1,1,1,1,1], 10**-7)
 def main():
     # output_newton_cotes(function)
