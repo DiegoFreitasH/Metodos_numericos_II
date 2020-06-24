@@ -323,7 +323,6 @@ def solveLU(L, U, x):
     y = subs_sucessivas(L, x)
     return subs_retroativas(U, y)
 
-
 def potencia_regular(A, v0, e):
     gamma_novo = 0
     vk_novo = v0
@@ -365,3 +364,43 @@ def potencia_com_deslocamento(A, v0, e, u):
     gamma, x = potencia_inversa(A_temp, v0, e)
     gamma += u
     return gamma, x
+
+def select_pivo(matrix, k):
+    n = len(matrix)
+    pv = matrix[k][k]
+    index = k
+    for i in range(k+1, n):
+        pv_aux = matrix[i][k]
+        if(abs(pv_aux) > pv):
+            pv = pv_aux
+            index = i
+    return pv, index
+
+def permute(matrix, p, k, r):
+    n = len(matrix)
+    p[k], p[r] = p[r], p[k]
+    for i in range(n):
+        matrix[k][i], matrix[r][i] = matrix[r][i], matrix[k][i]
+
+def fact_LU(A):
+    n = len(A)
+    U = A[:]
+    L = [[0 for i in range(n)] for j in range(n)]
+    permutations = [i for i in range(n)]
+    L[0][0] = 1
+
+    for k in range(n-1):
+        
+        pv, index = select_pivo(U, k)
+        if(pv == 0): raise ZeroDivisionError
+        if(index != k): permute(U, permutations, k, index)
+   
+        for i in range(k+1, n):
+            m = -(U[i][k] / U[k][k])
+            U[i][k] = 0
+            L[i][k] = -m
+            
+            for j in range(k+1, n):
+                U[i][j] = U[i][j] + (m * U[k][j])
+                L[i][j] = 1 if (i == j) else 0
+    return L, U 
