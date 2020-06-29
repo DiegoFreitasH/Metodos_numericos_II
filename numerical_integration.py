@@ -264,7 +264,7 @@ def output_metodo_de_householder():
     for autovetor in autovetores_A_barra:
         autovetores_A.append(tranpose_matrix(mult_matrix_matrix(H, tranpose_matrix([autovetor])))[0])
 
-    autovalores_A = [(n,m) for n,m in zip(autovalores_A_barra, autovetores_A)]
+    resultados_A = [(n,m) for n,m in zip(autovalores_A_barra, autovetores_A)]
     
     print(f"\n{'-'*6}Metodo de Householder{'-'*6}")
     print('Matriz A Complementar = {')
@@ -274,9 +274,9 @@ def output_metodo_de_householder():
     print_matrix(H)
     print('}')
     print('\n-> Autovalores e Autovalores\n')
-    for av in autovalores_A:
-        print(f"Autovalor: {av[0]}")
-        print(f"Autovetor: {av[1]}")
+    for resultado in resultados_A:
+        print(f"Autovalor: {resultado[0]}")
+        print(f"Autovetor: {resultado[1]}")
         print()
         
 
@@ -293,9 +293,9 @@ def main():
     # output_surface_area()
     # output_volume()
     output_potencia_regular()
-    # output_potencia_inversa()
-    # output_potencia_com_deslocamento(2, -6, 10)
-    # output_metodo_de_householder()
+    output_potencia_inversa()
+    output_potencia_com_deslocamento(2, -6, 10)
+    output_metodo_de_householder()
 
 if __name__ == "__main__":
     main()
