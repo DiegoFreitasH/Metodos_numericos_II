@@ -221,8 +221,8 @@ def output_potencia_com_deslocamento(u1, u2, u3):
         [1, 2, 2, 4, 5]
     ]
     v0 = [1, 1, 1]
-    autovalor_A1, autovetor_A1 = potencia_com_deslocamento(A1, v0, 10**-7, u1)
-    autovalor_A2, autovetor_A2 = potencia_com_deslocamento(A2, v0, 10**-7, u2)
+    autovalor_A1, autovetor_A1 = potencia_com_deslocamento(A1, [1, 1, 1], 10**-7, u1)
+    autovalor_A2, autovetor_A2 = potencia_com_deslocamento(A2, [1, 1, 1], 10**-7, u2)
     autovalor_A3, autovetor_A3 = potencia_com_deslocamento(A3, [1,1,1,1,1], 10**-7, u3)
     
     print(f"\n{'-'*6}Potencia Com Deslocamento{'-'*6}")
@@ -236,6 +236,53 @@ def output_potencia_com_deslocamento(u1, u2, u3):
     print(f'Autovetor de A3 = {autovetor_A3}')
     print(f'Deslocamento de A3 = {u3}\n')
 
+def output_metodo_de_householder():
+    A = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+
+    A_barra, H = metodo_de_householder(A, len(A))
+    
+    max_autovalor, max_autovetor = potencia_regular(A_barra, [1, 1, 1, 1, 1], 10**-7)
+    min_autovalor, min_autovetor = potencia_inversa(A_barra, [1, 1, 1, 1, 1], 10**-7)
+
+    autovalores_A_barra = [min_autovalor]
+    autovetores_A_barra = [min_autovetor]
+
+    for i in range(math.floor(min_autovalor), math.floor(max_autovalor), 5):
+        autovalor, autovetor = potencia_com_deslocamento(A_barra, [1, 1, 1, 1, 1], 10**-7, i)
+        if abs(autovalor - autovalores_A_barra[-1]) > 1:
+            autovalores_A_barra.append(autovalor)
+            autovetores_A_barra.append(autovetor)
+    
+    autovetores_A = []
+
+    for autovetor in autovetores_A_barra:
+        autovetores_A.append(tranpose_matrix(mult_matrix_matrix(H, tranpose_matrix([autovetor])))[0])
+
+    autovalores_A = [(n,m) for n,m in zip(autovalores_A_barra, autovetores_A)]
+    
+    print(f"\n{'-'*6}Metodo de Householder{'-'*6}")
+    print('Matriz A Complementar = {')
+    print_matrix(A_barra)
+    print('}')
+    print('Matriz H Acumulada = {')
+    print_matrix(H)
+    print('}')
+    print('\n-> Autovalores e Autovalores\n')
+    for av in autovalores_A:
+        print(f"Autovalor: {av[0]}")
+        print(f"Autovetor: {av[1]}")
+        print()
+        
+
+
+
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -246,8 +293,9 @@ def main():
     # output_surface_area()
     # output_volume()
     output_potencia_regular()
-    output_potencia_inversa()
-    output_potencia_com_deslocamento(1, 1, 1)
+    # output_potencia_inversa()
+    # output_potencia_com_deslocamento(2, -6, 10)
+    # output_metodo_de_householder()
 
 if __name__ == "__main__":
     main()

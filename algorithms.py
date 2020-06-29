@@ -239,11 +239,8 @@ def exponencial_dupla(f, a, b, E):
 # ======================================= #
 
 def normalizar(v):
-    div = 0.0
     out = []
-    for n in v:
-        div += n**2
-    div = math.sqrt(div)
+    div = math.sqrt(mult_vector(v,v))
     for n in v:
         out.append(n/div)
     return out
@@ -254,17 +251,30 @@ def mult_vector(v0, v1):
         out += n*m
     return out
 
-def mult_matrix(A, v):
+def mult_matrix_vector(A, v):
+    n = len(A)
     out = []
-    for row in A:
-        out.append(mult_vector(row,v))
-    return out;
+    for i in range(n):
+        s = 0.0
+        for j in range(n):
+            s += v[j]*A[i][j]
+        out.append(s)
+    return out
+
+def mult_matrix_matrix(A, B):
+    out = [[0 for i in range(len(B[0]))] for j in range(len(A))]
+    for i in range(len(A)):
+        for j in range(len(B[0])):
+            for k in range(len(B)):
+                out[i][j] += A[i][k] * B[k][j]
+    return out
 
 def print_matrix(matrix):
     n = len(matrix)
     for i in range(n):
-        for j in range(n):
-            print(f'{matrix[i][j]:.2f}', end=' ')
+        print('\t', end='')
+        for j in range(len(matrix[0])):
+            print(f'{matrix[i][j]:.2f}'.zfill(5), end=' ')
         print()
 
 def decomLU(A):
@@ -328,10 +338,12 @@ def potencia_regular(A, v0, e):
     vk_novo = v0
     error = 10
     while(error > e):
+        
         gamma_velho = gamma_novo
         vk_velho = vk_novo
+
         x = normalizar(vk_velho)
-        vk_novo = mult_matrix(A, x)
+        vk_novo = mult_matrix_vector(A, x)
         gamma_novo = mult_vector(x, vk_novo)
         error = abs((gamma_novo - gamma_velho)/gamma_novo)
     
@@ -352,15 +364,15 @@ def potencia_inversa(A, v0, e):
         vk_novo = solveLU(L, U, x)
         gamma_novo = mult_vector(x, vk_novo)
         error = abs((gamma_novo - gamma_velho)/gamma_novo)
-    gamma = 1/gamma_novo
+    
+    gamma = float(1.0/gamma_novo)
 
     return gamma, x
 
 def potencia_com_deslocamento(A, v0, e, u):
     n = len(A)
-    A_temp = A[:]
-    for i in range(n):
-        A_temp[i][i] -= u
+    A_temp = [[A[i][j] if i != j else A[i][j] - u for j in range(n)] for i in range(n)]
+                
     gamma, x = potencia_inversa(A_temp, v0, e)
     gamma += u
     return gamma, x
@@ -404,3 +416,51 @@ def fact_LU(A):
                 U[i][j] = U[i][j] + (m * U[k][j])
                 L[i][j] = 1 if (i == j) else 0
     return L, U 
+
+def tranpose_matrix(A):
+    n = len(A) 
+    return [[A[i][j] for i in range(n)] for j in range(len(A[0]))]
+
+def get_lenght(v):
+    return math.sqrt(mult_vector(v, v))
+
+def subract_vector(v1, v2):
+    n = len(v1)
+    out = []
+    for n, m in zip(v1, v2):
+        out.append(n - m)
+    return out
+
+def get_matriz_householder(A, i):
+    n = len(A)
+    w = [0 if k <= i else A[k][i] for k in range(n)]
+    w2 = [0 for i in range(n)]
+
+    w2[i + 1] = get_lenght(w)
+    
+    N = subract_vector(w, w2)
+    
+    n_norm = normalizar(N)
+    
+    temp_n = [2*n_norm[i] for i in range(n)]
+    temp = mult_matrix_matrix(tranpose_matrix([temp_n]), [n_norm])
+    
+    H = [[1 - temp[i][j] if i == j else -temp[i][j] for j in range(n)] for i in range(n)]
+    
+    return H
+
+def metodo_de_householder(A, n):
+    H = [[1 if i == j else 0 for i in range(n)] for j in range(n)]
+    A_old = A[:]
+    for i in range(n-2):
+        
+        H_new = get_matriz_householder(A_old, i)
+
+        temp = mult_matrix_matrix(H_new, A_old)
+        A_new = mult_matrix_matrix(temp, H_new)
+        
+        A_old = A_new
+        
+        H = mult_matrix_matrix(H, H_new)
+
+    return A_new, H
