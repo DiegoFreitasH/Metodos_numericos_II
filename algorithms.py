@@ -482,7 +482,7 @@ def getMatrizJacobiBaseadaEmIJ(A, i, j, n):
     J = getIdentityMatrix(n)
 
     if(abs(A[i][j]) <= e):
-        return 0
+        return J
     elif(abs(A[i][i] - A[j][j]) <= e):
         theta = math.pi / 4
     else:
@@ -526,8 +526,10 @@ def metodoDeJacobi(A, n, e):
     A_old = A[:]
     val = 100.0
     i = 0
-    while(i < 2):
+    while(val > e):
         A_new, J = varreduraDeJacobi(A_old, n)
+        print_matrix(J)
+        print()
         A_old = A_new
         P = mult_matrix_matrix(P, J)
         val = somaAbaixoDaDiagonal(A_new, n)
