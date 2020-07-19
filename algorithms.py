@@ -269,6 +269,9 @@ def mult_matrix_matrix(A, B):
                 out[i][j] += A[i][k] * B[k][j]
     return out
 
+def getIdentityMatrix(n):
+    return [[1 if i == j else 0 for i in range(n)] for j in range(n)]
+
 def print_matrix(matrix):
     n = len(matrix)
     for i in range(n):
@@ -431,6 +434,10 @@ def subract_vector(v1, v2):
         out.append(n - m)
     return out
 
+# ======================================= #
+#          Metodo de Householder          #
+# ======================================= #
+
 def get_matriz_householder(A, i):
     n = len(A)
     w = [0 if k <= i else A[k][i] for k in range(n)]
@@ -464,3 +471,70 @@ def metodo_de_householder(A, n):
         H = mult_matrix_matrix(H, H_new)
 
     return A_new, H
+
+# ======================================= #
+#            Metodo de Jacobi             #
+# ======================================= #
+
+def getMatrizJacobiBaseadaEmIJ(A, i, j, n):
+    e = 10**-6
+
+    J = getIdentityMatrix(n)
+
+    if(abs(A[i][j]) <= e):
+        return 0
+    elif(abs(A[i][i] - A[j][j]) <= e):
+        theta = math.pi / 4
+    else:
+        theta = 0.5*math.atan(-2*A[i][j] / (A[i][i] - A[j][j]))
+    
+    J[i][i] = math.cos(theta)
+    J[j][j] = math.cos(theta)
+    J[i][j] = math.sin(theta)
+    J[j][i] = -math.sin(theta)
+
+    return J
+
+def varreduraDeJacobi(A, n):
+    J = getIdentityMatrix(n)
+
+    A_old = A
+
+    for j in range(n-1):
+        for i in range(j+1, n):
+            J_new = getMatrizJacobiBaseadaEmIJ(A_old, i, j, n)
+
+            J_newt = tranpose_matrix(J_new)
+            temp = mult_matrix_matrix(J_newt, A_old)
+            A_new = mult_matrix_matrix(temp, J_new)
+
+            A_old = A_new
+            J = mult_matrix_matrix(J, J_new)
+    
+    A_barra = A_new
+    return A_barra, J
+
+def somaAbaixoDaDiagonal(A, n):
+    soma = 0
+    for j in range(n-1):
+        for i in range(j+1, n):
+            soma += A[i][j]**2
+    return soma
+
+def metodoDeJacobi(A, n, e):
+    P = [[1 if i == j else 0 for i in range(n)] for j in range(n)]
+    A_old = A[:]
+    val = 100.0
+    i = 0
+    while(i < 2):
+        A_new, J = varreduraDeJacobi(A_old, n)
+        A_old = A_new
+        P = mult_matrix_matrix(P, J)
+        val = somaAbaixoDaDiagonal(A_new, n)
+        i += 1
+
+    Lamb = [A_new[i][i] for i in range(n)]
+    return P, Lamb
+
+            
+

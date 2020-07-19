@@ -279,7 +279,32 @@ def output_metodo_de_householder():
         print(f"Autovetor: {resultado[1]}")
         print()
         
+def output_metodo_de_jacobi():
+    A = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+    n = len(A)
+    P, autovalores = metodoDeJacobi(A, n, 10**-7)
+    A_barra = [[autovalores[i] if i == j else 0 for i in range(n)] for j in range(n)]
+    
+    print("Matriz A barra = {")
+    print_matrix(A_barra)
+    print("}")
 
+    print("Matriz Acumulada P = {")
+    print_matrix(P)
+    print("}")
+
+    # TODO Refatorar usando for ao inves de transpose_matrix
+    paresVetoresValores = [i for i in zip(autovalores, tranpose_matrix(P))]
+    for i in range(n):
+        print(paresVetoresValores[i])
+    
+    # TODO Item 1.3 e 1.5
 
 
 
@@ -292,10 +317,11 @@ def main():
     # output_singularidades(function_1, function_2)
     # output_surface_area()
     # output_volume()
-    output_potencia_regular()
-    output_potencia_inversa()
-    output_potencia_com_deslocamento(2, -6, 10)
+    # output_potencia_regular()
+    # output_potencia_inversa()
+    # output_potencia_com_deslocamento(2, -6, 10)
     output_metodo_de_householder()
+    output_metodo_de_jacobi()
 
 if __name__ == "__main__":
     main()
