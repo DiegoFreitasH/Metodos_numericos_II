@@ -277,7 +277,7 @@ def print_matrix(matrix):
     for i in range(n):
         print('\t', end='')
         for j in range(len(matrix[0])):
-            print(f'{matrix[i][j]:.2f}'.zfill(5), end=' ')
+            print(f'{matrix[i][j]:.5f}'.zfill(8), end=' ')
         print()
 
 def decomLU(A):
@@ -521,19 +521,19 @@ def somaAbaixoDaDiagonal(A, n):
             soma += A[i][j]**2
     return soma
 
-def metodoDeJacobi(A, n, e):
-    P = [[1 if i == j else 0 for i in range(n)] for j in range(n)]
+def metodoDeJacobi(A, n, e, DEBUG=False):
+    P = getIdentityMatrix(n)
     A_old = A[:]
     val = 100.0
-    i = 0
     while(val > e):
         A_new, J = varreduraDeJacobi(A_old, n)
-        print_matrix(J)
-        print()
+        if(DEBUG):
+            print("Varredura de Jabobi = {")
+            print_matrix(A_new)
+            print("}")
         A_old = A_new
         P = mult_matrix_matrix(P, J)
         val = somaAbaixoDaDiagonal(A_new, n)
-        i += 1
 
     Lamb = [A_new[i][i] for i in range(n)]
     return P, Lamb

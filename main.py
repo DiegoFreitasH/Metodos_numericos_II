@@ -288,7 +288,9 @@ def output_metodo_de_jacobi():
         [1, 2, 2, 4, 5]
     ]
     n = len(A)
-    P, autovalores = metodoDeJacobi(A, n, 10**-7)
+
+
+    P, autovalores = metodoDeJacobi(A, n, 10**-7, True)
     A_barra = [[autovalores[i] if i == j else 0 for i in range(n)] for j in range(n)]
     
     print("Matriz A barra = {")
@@ -299,13 +301,26 @@ def output_metodo_de_jacobi():
     print_matrix(P)
     print("}")
 
-    # TODO Refatorar usando for ao inves de transpose_matrix
     paresVetoresValores = [i for i in zip(autovalores, tranpose_matrix(P))]
     for i in range(n):
         print(paresVetoresValores[i])
-    
-    # TODO Item 1.3 e 1.5
 
+    print()
+    print("Varredura de Jacobi com Matriz Tridiagonal")
+
+    A_barra, H = metodo_de_householder(A, n)
+    P, autovalores = metodoDeJacobi(A_barra, n, 10**-7)
+    
+    print("Matriz Acumulada P = {")
+    print_matrix(P)
+    print("}")
+    
+    P = mult_matrix_matrix(H, P)
+
+    print("Matriz Acumulada P*H = {")
+    print_matrix(P)
+    print("}")
+       
 
 
 def main():
@@ -320,7 +335,7 @@ def main():
     # output_potencia_regular()
     # output_potencia_inversa()
     # output_potencia_com_deslocamento(2, -6, 10)
-    output_metodo_de_householder()
+    # output_metodo_de_householder()
     output_metodo_de_jacobi()
 
 if __name__ == "__main__":
