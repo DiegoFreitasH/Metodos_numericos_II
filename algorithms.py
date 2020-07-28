@@ -1,7 +1,7 @@
 import math
 import os
 # ======================================= #
-#       Fórmulas de newton-colos          #
+#       Fórmulas de newton-cotes          #
 # ======================================= #
 
 def regra_trapezio(f, xi, xf, k, delta_x):
@@ -538,5 +538,54 @@ def metodoDeJacobi(A, n, e, DEBUG=False):
     Lamb = [A_new[i][i] for i in range(n)]
     return P, Lamb
 
-            
+# ======================================= #
+#                Metodo QR                #
+# ======================================= #
 
+def getMatrizJacobiBaseadaEmIJ_De_R(R, i, j, n):
+    e = 10**-6
+    J = getIdentityMatrix(n)
+    if(abs(R[i][j]) <= e):
+        return J
+    if(abs(R[j][j] <= e)):
+        if(R[i][j] < 0):
+            theta = math.pi/2
+        else:
+            theta = -math.pi/2
+    else:
+        theta = math.atan(-R[i][j]/R[j][j])
+    
+    J[i][i] = math.cos(theta)
+    J[j][j] = math.cos(theta)
+    J[i][j] = math.sin(theta)
+    J[j][i] = -math.sin(theta)
+
+    return J
+
+def decompQR(A, n):
+    QT = getIdentityMatrix(n)
+    R_old = A
+    for j in range(n-1):
+        for i in range(j+1, n):
+            J_new = getMatrizJacobiBaseadaEmIJ_De_R(R_old, i, j , n)
+            R_new = mult_matrix_matrix(J_new, R_old)
+            R_old = R_new
+            QT = mult_matrix_matrix(J_new, QT)
+    Q = tranpose_matrix(QT)
+    R = R_new
+    return Q, R
+
+def metodoQR(A, n, e, DEBUG=False):
+    val = 100
+
+    P = getIdentityMatrix(n)
+    A_old = A[:]
+    
+    while(val > e):
+        Q, R = decompQR(A_old, n)
+        A_new = mult_matrix_matrix(R, Q)
+        A_old = A_new
+        P = mult_matrix_matrix(P, Q)
+        val = somaAbaixoDaDiagonal(A_new, n)
+    autovetores = [A_new[i][i] for i in range(n)]
+    return P, autovetores

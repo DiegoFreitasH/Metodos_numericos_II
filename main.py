@@ -289,10 +289,10 @@ def output_metodo_de_jacobi():
     ]
     n = len(A)
 
-
+    print(f"\n{'-'*6}Metodo de Jacobi{'-'*6}")
     P, autovalores = metodoDeJacobi(A, n, 10**-7, True)
     A_barra = [[autovalores[i] if i == j else 0 for i in range(n)] for j in range(n)]
-    
+
     print("Matriz A barra = {")
     print_matrix(A_barra)
     print("}")
@@ -303,11 +303,12 @@ def output_metodo_de_jacobi():
 
     paresVetoresValores = [i for i in zip(autovalores, tranpose_matrix(P))]
     for i in range(n):
-        print(paresVetoresValores[i])
+        print(f"Autovalor: {paresVetoresValores[i][0]}")
+        print(f"Autovetor: {paresVetoresValores[i][1]}\n")
 
-    print()
     print("Varredura de Jacobi com Matriz Tridiagonal")
 
+    # TODO Item 2.1
     A_barra, H = metodo_de_householder(A, n)
     P, autovalores = metodoDeJacobi(A_barra, n, 10**-7)
     
@@ -320,7 +321,45 @@ def output_metodo_de_jacobi():
     print("Matriz Acumulada P*H = {")
     print_matrix(P)
     print("}")
-       
+    
+def output_metodo_QR():
+    A = [
+        [40, 8, 4, 2, 1],
+        [8, 30, 12, 6, 2],
+        [4, 12, 20, 1, 2],
+        [2, 6, 1, 25, 4],
+        [1, 2, 2, 4, 5]
+    ]
+    n = len(A)
+
+    print(f"\n{'-'*6} Metodo QR {'-'*6}")
+    P, autovalores = metodoQR(A, n, 10**-7)
+
+    print("Matriz Acumulada P = {")
+    print_matrix(P)
+    print("}")
+    
+    # TODO Item 1.3
+    paresVetoresValores = [i for i in zip(autovalores, tranpose_matrix(P))]
+    for i in range(n):
+        print(f"Autovalor: {paresVetoresValores[i][0]}")
+        print(f"Autovetor: {paresVetoresValores[i][1]}\n")
+
+    # TODO Item 2.1 
+    A_barra, H = metodo_de_householder(A, n)
+    P, autovalores = metodoQR(A_barra, n, 10**-7)
+    
+    print("Metodo QR com matriz Tridiagonal")
+
+    print("Matriz Acumulada P = {")
+    print_matrix(P)
+    print("}")
+    
+    P = mult_matrix_matrix(H, P)
+
+    print("Matriz Acumulada P*H = {")
+    print_matrix(P)
+    print("}")
 
 
 def main():
@@ -337,6 +376,7 @@ def main():
     # output_potencia_com_deslocamento(2, -6, 10)
     # output_metodo_de_householder()
     output_metodo_de_jacobi()
+    output_metodo_QR()
 
 if __name__ == "__main__":
     main()
