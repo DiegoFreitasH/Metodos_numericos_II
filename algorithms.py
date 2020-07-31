@@ -70,12 +70,12 @@ def gauss_legendre_4p(f, xi, xf, k, delta_x):
 
 def integrate_n(f, a, b, n, subs_func=regra_trapezio):
     I = 0
-    h = float((b-a)/float(n))
+    delta = float((b-a)/float(n))
 
     for k in range(n):
-        x0 = a + k*h
-        x1 = x0 + h
-        I += subs_func(f, x0, x1, k, h)
+        x0 = a + k*delta
+        x1 = x0 + delta
+        I += subs_func(f, x0, x1, k, delta)
     
     return I
 
@@ -211,8 +211,9 @@ def exponencial_simples(f, a, b, E):
     
     # c é no máximo 19 para evitar o erro de precisão por conta do limite de ponto flutuante
     while erro >= E and c <= 19:
-        In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
-        erro = abs(In - I)
+        In = integrate(g, -c, c, 10**(-7), subs_func=regra_poli_4_fechada)
+        print(In)
+        erro = abs((In - I)/ In)
         I = In
         c += 1
     return I
@@ -228,7 +229,7 @@ def exponencial_dupla(f, a, b, E):
     # c é no máximo 3 para evitar o erro de precisão por conta do limite de ponto flutuante
     while erro >= E and c <= 3:
         In = integrate(g, -c, c, 10**(-7), subs_func=gauss_legendre_4p)
-        erro = abs(In - I)
+        erro = abs((In - I)/ In)
         I = In
         c += .5
     return I
@@ -495,10 +496,13 @@ def getMatrizJacobiBaseadaEmIJ(A, i, j, n):
 
     return J
 
-def varreduraDeJacobi(A, n):
+def varreduraDeJacobi(A, n, DEBUG=False):
     J = getIdentityMatrix(n)
 
     A_old = A
+
+    if(DEBUG):
+        print("\nVarredura de Jacobi")
 
     for j in range(n-1):
         for i in range(j+1, n):
@@ -510,6 +514,11 @@ def varreduraDeJacobi(A, n):
 
             A_old = A_new
             J = mult_matrix_matrix(J, J_new)
+            
+            if(DEBUG):
+                print("Matriz A_nova = {")
+                print_matrix(A_new)
+                print("}")
     
     A_barra = A_new
     return A_barra, J
@@ -521,14 +530,15 @@ def somaAbaixoDaDiagonal(A, n):
             soma += A[i][j]**2
     return soma
 
-def metodoDeJacobi(A, n, e, DEBUG=False):
+def metodoDeJacobi(A, n, e, DEBUG=False, PRINT_TRI=False):
     P = getIdentityMatrix(n)
     A_old = A[:]
     val = 100.0
+
     while(val > e):
-        A_new, J = varreduraDeJacobi(A_old, n)
+        A_new, J = varreduraDeJacobi(A_old, n, PRINT_TRI)
         if(DEBUG):
-            print("Varredura de Jabobi = {")
+            print("Varredura = {")
             print_matrix(A_new)
             print("}")
         A_old = A_new
@@ -585,6 +595,10 @@ def metodoQR(A, n, e, DEBUG=False):
         Q, R = decompQR(A_old, n)
         A_new = mult_matrix_matrix(R, Q)
         A_old = A_new
+        if(DEBUG):
+            print("Matriz QR = {")
+            print_matrix(A_new)
+            print("}")
         P = mult_matrix_matrix(P, Q)
         val = somaAbaixoDaDiagonal(A_new, n)
     autovetores = [A_new[i][i] for i in range(n)]

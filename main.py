@@ -308,10 +308,11 @@ def output_metodo_de_jacobi():
 
     print("Varredura de Jacobi com Matriz Tridiagonal")
 
-    # TODO Item 2.1
     A_barra, H = metodo_de_householder(A, n)
-    P, autovalores = metodoDeJacobi(A_barra, n, 10**-7)
+    P, autovalores = metodoDeJacobi(A_barra, n, 10**-7, PRINT_TRI=True)
     
+    print("\nResultado Metodo Jacobi com matriz Tridiagonal")
+
     print("Matriz Acumulada P = {")
     print_matrix(P)
     print("}")
@@ -333,23 +334,24 @@ def output_metodo_QR():
     n = len(A)
 
     print(f"\n{'-'*6} Metodo QR {'-'*6}")
-    P, autovalores = metodoQR(A, n, 10**-7)
+    P, autovalores = metodoQR(A, n, 10**-7, True)
 
     print("Matriz Acumulada P = {")
     print_matrix(P)
     print("}")
     
-    # TODO Item 1.3
+    print("\nResultado Metodo QR")
     paresVetoresValores = [i for i in zip(autovalores, tranpose_matrix(P))]
     for i in range(n):
         print(f"Autovalor: {paresVetoresValores[i][0]}")
         print(f"Autovetor: {paresVetoresValores[i][1]}\n")
 
-    # TODO Item 2.1 
-    A_barra, H = metodo_de_householder(A, n)
-    P, autovalores = metodoQR(A_barra, n, 10**-7)
-    
     print("Metodo QR com matriz Tridiagonal")
+
+    A_barra, H = metodo_de_householder(A, n)
+    P, autovalores = metodoQR(A_barra, n, 10**-7, True)
+    
+    print("\nResultado Metodo QR com matriz Tridiagonal")
 
     print("Matriz Acumulada P = {")
     print_matrix(P)
@@ -375,7 +377,7 @@ def main():
     # output_potencia_inversa()
     # output_potencia_com_deslocamento(2, -6, 10)
     # output_metodo_de_householder()
-    output_metodo_de_jacobi()
+    # output_metodo_de_jacobi()
     output_metodo_QR()
 
 if __name__ == "__main__":
