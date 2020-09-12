@@ -377,6 +377,8 @@ def output_euler_explicito(t0, v0, y0, k, m, g, delta_t):
 
         return S
 
+    print(f"\n{6*'-'}Euler Explicito{6*'-'}")
+
     while S[0] > 0:
         S = calc_s(S, F, delta_t)
         t_total += delta_t
@@ -389,8 +391,34 @@ def output_euler_explicito(t0, v0, y0, k, m, g, delta_t):
     print(f"Tempo queda no mar: {t_total:.7f}")
     print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
 
+def output_euler_implicito(t0, v0, y0, k, m, g, delta_t):
+    F = lambda v: [-g-(k/m)*v, v]
+    S = [
+        v0, 
+        y0
+    ]
+    t_total = 0
+
+    def calc_s(S, F, delta_t):
+        out_S = [0, 0]
+        out_S[0] = (m/( m + k * delta_t)) * (S[0] - g*delta_t)
+        out_S[1] = S[1] + (m*delta_t/( m + k * delta_t)) * (S[0] - g*delta_t)
+        return out_S
+
+    print(f"\n{6*'-'}Euler Implicito{6*'-'}")
 
 
+    while S[0] > 0:
+        S = calc_s(S, F, delta_t)
+        t_total += delta_t
+    print(f"Altura Máxima: {S[1]:.7f}")
+    print(f"Tempo decorrido: {t_total:.7f}")
+
+    while S[1] > 0:
+        S = calc_s(S, F, delta_t)
+        t_total += delta_t
+    print(f"Tempo queda no mar: {t_total:.7f}")
+    print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
 
 def main():
     # output_newton_cotes(function)
@@ -405,9 +433,11 @@ def main():
     # output_potencia_inversa()
     # output_potencia_com_deslocamento(2, -6, 10)
     # output_metodo_de_householder()
-    output_metodo_de_jacobi()
+    # output_metodo_de_jacobi()
     # output_metodo_QR()
     # output_euler_explicito(0, 5, 200, 0.25, 2, 10, 0.1)
-    # output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
+    output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
+    output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
+
 if __name__ == "__main__":
     main()
