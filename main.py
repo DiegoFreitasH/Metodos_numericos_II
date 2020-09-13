@@ -346,7 +346,7 @@ def output_metodo_QR():
         print(f"Autovalor: {paresVetoresValores[i][0]}")
         print(f"Autovetor: {paresVetoresValores[i][1]}\n")
 
-    print("Metodo QR com matriz Tridiagonal")
+    print(f"Metodo QR com matriz Tridiagonal\n{35*'='}")
 
     A_barra, H = metodo_de_householder(A, n)
     P, autovalores = metodoQR(A_barra, n, 10**-7, True)
@@ -459,8 +459,8 @@ def main():
     # output_potencia_inversa()
     # output_potencia_com_deslocamento(2, -6, 10)
     # output_metodo_de_householder()
-    output_metodo_de_jacobi()
-    # output_metodo_QR()
+    # output_metodo_de_jacobi()
+    output_metodo_QR()
     # output_euler_explicito(0, 5, 200, 0.25, 2, 10, 0.1)
     # output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
     # output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
