@@ -306,12 +306,12 @@ def output_metodo_de_jacobi():
         print(f"Autovalor: {paresVetoresValores[i][0]}")
         print(f"Autovetor: {paresVetoresValores[i][1]}\n")
 
-    print("Varredura de Jacobi com Matriz Tridiagonal")
+    print(f"Varredura de Jacobi com Matriz Tridiagonal\n{45*'='}")
 
     A_barra, H = metodo_de_householder(A, n)
-    P, autovalores = metodoDeJacobi(A_barra, n, 10**-7, PRINT_TRI=True)
+    P, autovalores = metodoDeJacobi(A_barra, n, 10**-7, DEBUG=False, PRINT_TRI=True)
     
-    print("\nResultado Metodo Jacobi com matriz Tridiagonal")
+    print(f"\nResultado Metodo Jacobi com matriz Tridiagonal")
 
     print("Matriz Acumulada P = {")
     print_matrix(P)
@@ -420,6 +420,32 @@ def output_euler_implicito(t0, v0, y0, k, m, g, delta_t):
     print(f"Tempo queda no mar: {t_total:.7f}")
     print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
 
+def output_runge_kutta(t0, v0, y0, k, m, g, delta_t):
+    F = lambda v: [-g-(k/m)*v, v]
+    S = [
+        v0, 
+        y0
+    ]
+    t_total = 0
+
+    def calc_s(S, F, delta_t):
+        F_out = [x*delta_t for x in F(S[0])]
+        S = [s + f for s, f in zip(S, F_out)]
+        return S
+    
+    F1 = [x for x in F(S[0])]
+    S_1 = S + delta_t/2 * F1
+
+    F2 = [x*delta_t/2 for x in F(S_1[0])]
+    S_2 = S + delta_t * (-1*F1 + 2*F2)
+
+    F3 = [x*delta_t for x in F(S_1[0])]
+
+    S_out = S + delta_t * (1/6*F1 + 4/6*F2 + 1/6*F3)
+    
+    
+
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -433,11 +459,13 @@ def main():
     # output_potencia_inversa()
     # output_potencia_com_deslocamento(2, -6, 10)
     # output_metodo_de_householder()
-    # output_metodo_de_jacobi()
+    output_metodo_de_jacobi()
     # output_metodo_QR()
     # output_euler_explicito(0, 5, 200, 0.25, 2, 10, 0.1)
-    output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
-    output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
+    # output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
+    # output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-1)
+    # output_euler_explicito(0, 5, 200, 0.25, 2, 10, 10**-1)
+    # output_euler_implicito(0, 5, 200, 0.25, 2, 10, 10**-1)
 
 if __name__ == "__main__":
     main()
