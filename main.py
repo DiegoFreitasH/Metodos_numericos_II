@@ -366,33 +366,40 @@ def output_metodo_QR():
 
 def output_euler_explicito(t0, v0, y0, k, m, g, delta_t):
     F = lambda v: np.array([-g-(k/m)*v, v])
-    S = np.array([
+    S_0 = np.array([
         v0,
         y0
     ])
-    t_total = 0
+    
 
     print(f"\n{6*'-'}Euler Explicito{6*'-'}")
 
-    while S[0] > 0:
-        S = S + delta_t * F(S[0])
-        t_total += delta_t
-    print(f"Altura Máxima: {S[1]:.7f}")
-    print(f"Tempo decorrido: {t_total:.7f}")
 
-    while S[1] > 0:
-        S = S + delta_t * F(S[0])
-        t_total += delta_t
-    print(f"Tempo queda no mar: {t_total:.7f}")
-    print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
+    print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
+    def print_row(S, delta_t):
+        t_now = 0
+        while S[0] > 0:
+            S = S + delta_t * F(S[0])
+            t_now += delta_t
+        y_max = S[1]
+        t_dec = t_now
+
+        while S[1] > 0:
+            S = S + delta_t * F(S[0])
+            t_now += delta_t
+        t_total = t_now
+        v_imp = S[0]
+        print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+    
+    for dt in delta_t:
+        print_row(S_0, dt)
 
 def output_euler_implicito(t0, v0, y0, k, m, g, delta_t):
     F = lambda v: np.array([-g-(k/m)*v, v])
-    S = np.array([
+    S_0 = np.array([
         v0,
         y0
-    ])
-    t_total = 0
+    ])   
 
     def euler_implicito(S, F, delta_t):
         out_S = [0, 0]
@@ -402,28 +409,33 @@ def output_euler_implicito(t0, v0, y0, k, m, g, delta_t):
 
     print(f"\n{6*'-'}Euler Implicito{6*'-'}")
 
-
-    while S[0] > 0:
-        S = euler_implicito(S, F, delta_t)
-        t_total += delta_t
-    print(f"Altura Máxima: {S[1]:.7f}")
-    print(f"Tempo decorrido: {t_total:.7f}")
-
-    while S[1] > 0:
-        S = euler_implicito(S, F, delta_t)
-        t_total += delta_t
-    print(f"Tempo queda no mar: {t_total:.7f}")
-    print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
+    def print_row(S, delta_t):
+        t_now = 0
+        while S[0] > 0:
+            S = euler_implicito(S, F, delta_t)
+            t_now += delta_t
+        y_max = S[1]
+        t_dec = t_now
+    
+        while S[1] > 0:
+            S = euler_implicito(S, F, delta_t)
+            t_now += delta_t
+        t_total = t_now
+        v_imp = S[0]
+        print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+    
+    print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
+    for dt in delta_t:
+        print_row(S_0, dt)
 
 def output_runge_kutta(t0, v0, y0, k, m, g, delta_t):
     F = lambda v: np.array([-g-(k/m)*v, v])
-    S = np.array([
+    S_0 = np.array([
         v0,
         y0
     ])
-    t_total = 0
 
-    def runge_kutta(S):
+    def runge_kutta(S, delta_t):
         F1 = F(S[0])
         S_1 = S + delta_t/2 * F1
 
@@ -437,19 +449,25 @@ def output_runge_kutta(t0, v0, y0, k, m, g, delta_t):
     
     print(f"\n{6*'-'}Runge-Kutta{6*'-'}")
 
-    while S[0] > 0:
-        S_old = S
-        S = runge_kutta(S)
-        t_total += delta_t
-    print(f"Altura Máxima: {S[1]:.7f}")
-    print(f"Tempo decorrido: {t_total:.7f}")
+    def print_row(S, delta_t):
+        t_now = 0
+        while S[0] > 0:
+            S = runge_kutta(S, delta_t)
+            t_now += delta_t
+        y_max = S[1]
+        t_dec = t_now
 
-    while S[1] > 0:
-        S = runge_kutta(S)
-        t_total += delta_t
-    print(f"Tempo queda no mar: {t_total:.7f}")
-    print(f"Velocidade no momento do impacto: {S[0]:.7f}m/s")
-    
+        while S[1] > 0:
+            S = runge_kutta(S, delta_t)
+            t_now += delta_t
+        t_total = t_now
+        v_imp = S[0]
+        print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+
+    print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
+    for dt in delta_t:
+        print_row(S_0, dt)
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -468,9 +486,9 @@ def main():
     # output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     # output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     # output_runge_kutta(0, 3, 150, 0.5, 0.5, 10, 10**-4)
-    output_euler_explicito(0, 5, 200, 0.25, 2, 10, 10**-4)
-    output_euler_implicito(0, 5, 200, 0.25, 2, 10, 10**-4)
-    output_runge_kutta(0, 5, 200, 0.25, 2, 10, 10**-4)
+    output_euler_explicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    output_euler_implicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    output_runge_kutta(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
 
 if __name__ == "__main__":
     main()
