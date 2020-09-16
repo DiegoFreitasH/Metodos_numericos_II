@@ -364,35 +364,34 @@ def output_metodo_QR():
     print_matrix(P)
     print("}")
 
+def print_row_PVI(S, F, delta_t, PVI_method):
+    t_now = 0
+    while S[0] > 0:
+        S = PVI_method(S, F, delta_t)
+        t_now += delta_t
+    y_max = S[1]
+    t_dec = t_now
+
+    while S[1] > 0:
+        S = PVI_method(S, F, delta_t)
+        t_now += delta_t
+    t_total = t_now
+    v_imp = S[0]
+
+    print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+
 def output_euler_explicito(t0, v0, y0, k, m, g, delta_t):
-    F = lambda v: np.array([-g-(k/m)*v, v])
+    F = lambda S: np.array([-g-(k/m)*S[0], S[0]])
     S_0 = np.array([
         v0,
         y0
     ])
     
-
     print(f"\n{6*'-'}Euler Explicito{6*'-'}")
 
-
     print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
-    def print_row(S, delta_t):
-        t_now = 0
-        while S[0] > 0:
-            S = S + delta_t * F(S[0])
-            t_now += delta_t
-        y_max = S[1]
-        t_dec = t_now
-
-        while S[1] > 0:
-            S = S + delta_t * F(S[0])
-            t_now += delta_t
-        t_total = t_now
-        v_imp = S[0]
-        print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
-    
     for dt in delta_t:
-        print_row(S_0, dt)
+        print_row_PVI(S_0, F, dt, euler_explicito)
 
 def output_euler_implicito(t0, v0, y0, k, m, g, delta_t):
     F = lambda v: np.array([-g-(k/m)*v, v])
@@ -434,39 +433,12 @@ def output_runge_kutta(t0, v0, y0, k, m, g, delta_t):
         v0,
         y0
     ])
-
-    def runge_kutta(S, delta_t):
-        F1 = F(S[0])
-        S_1 = S + delta_t/2 * F1
-
-        F2 = F(S_1[0])
-        S_2 = S + delta_t * (-1*F1 + 2*F2)
-
-        F3 = F(S_2[0])
-
-        S_out = S + delta_t * (1/6*F1 + 4/6*F2 + 1/6*F3)
-        return S_out
     
     print(f"\n{6*'-'}Runge-Kutta{6*'-'}")
 
-    def print_row(S, delta_t):
-        t_now = 0
-        while S[0] > 0:
-            S = runge_kutta(S, delta_t)
-            t_now += delta_t
-        y_max = S[1]
-        t_dec = t_now
-
-        while S[1] > 0:
-            S = runge_kutta(S, delta_t)
-            t_now += delta_t
-        t_total = t_now
-        v_imp = S[0]
-        print(f"{delta_t}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
-
     print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
     for dt in delta_t:
-        print_row(S_0, dt)
+        print_row_PVI(S_0, F, dt, runge_kutta)
 
 def main():
     # output_newton_cotes(function)

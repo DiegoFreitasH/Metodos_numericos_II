@@ -603,3 +603,22 @@ def metodoQR(A, n, e, DEBUG=False):
         val = somaAbaixoDaDiagonal(A_new, n)
     autovetores = [A_new[i][i] for i in range(n)]
     return P, autovetores
+
+# ======================================= #
+#          Problema Valor Inicial         #
+# ======================================= #
+
+def euler_explicito(S, F, delta_t):
+    return S + delta_t * F(S)
+
+def runge_kutta(S, F, delta_t):
+    F1 = F(S[0])
+    S_1 = S + delta_t/2 * F1
+
+    F2 = F(S_1[0])
+    S_2 = S + delta_t * (-1*F1 + 2*F2)
+
+    F3 = F(S_2[0])
+
+    S_out = S + delta_t * (1/6*F1 + 4/6*F2 + 1/6*F3)
+    return S_out
