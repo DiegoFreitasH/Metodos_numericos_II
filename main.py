@@ -440,6 +440,49 @@ def output_runge_kutta(t0, v0, y0, k, m, g, delta_t):
     for dt in delta_t:
         print_row_PVI(S_0, F, dt, runge_kutta)
 
+def output_preditor_corretor_4_ordem(t0, v0, y0, k, m, g, delta_t):
+    F = lambda v: np.array([-g-(k/m)*v, v])
+    S_0 = np.array([
+        v0,
+        y0
+    ])
+    
+    print(f"\n{6*'-'}Preditor-Corretor{6*'-'}")
+
+    print("\ty_max\t\tt_dec\t\tt_total\t\tv_impacto")
+    for dt in delta_t:
+        pre_values = [0,0,0,0]
+        pre_values[0] = S_0
+        pre_values[1] = runge_kutta_4_ordem(pre_values[0], F, dt)
+        pre_values[2] = runge_kutta_4_ordem(pre_values[1], F, dt)
+        pre_values[3] = runge_kutta_4_ordem(pre_values[2], F, dt)
+        t_now = 0
+        S = pre_values[3]
+
+        while S[0] > 0:
+            S = preditor_corretor_4_ordem(S, F, dt, pre_values)
+            pre_values[0] = pre_values[1]
+            pre_values[1] = pre_values[2]
+            pre_values[2] = pre_values[3]
+            pre_values[3] = S
+            t_now += dt
+        
+        y_max = S[1]
+        t_dec = t_now
+
+        while S[1] > 0:
+            S = preditor_corretor_4_ordem(pre_values[3], F, dt, pre_values)
+            pre_values[0] = pre_values[1]
+            pre_values[1] = pre_values[2]
+            pre_values[2] = pre_values[3]
+            pre_values[3] = S
+            t_now += dt
+        t_total = t_now
+        v_imp = S[0]
+
+        print(f"{dt}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+
+
 def main():
     # output_newton_cotes(function)
     # output_gauss_legendre(function)
@@ -459,8 +502,9 @@ def main():
     # output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     # output_runge_kutta(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     output_euler_explicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
-    output_euler_implicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    # output_euler_implicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
     output_runge_kutta(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    output_preditor_corretor_4_ordem(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
 
 if __name__ == "__main__":
     main()

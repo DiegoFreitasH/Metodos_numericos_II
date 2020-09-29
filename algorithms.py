@@ -1,5 +1,6 @@
 import math
 import os
+import numpy as np
 # ======================================= #
 #       Fórmulas de newton-cotes          #
 # ======================================= #
@@ -622,3 +623,42 @@ def runge_kutta(S, F, delta_t):
 
     S_out = S + delta_t * (1/6*F1 + 4/6*F2 + 1/6*F3)
     return S_out
+
+def runge_kutta_4_ordem(S, F, delta_t):
+    F1 = F(S[0])
+    S_1 = S + delta_t/2 * F1
+
+    F2 = F(S_1[0])
+    S_2 = S + delta_t/2 * F2
+
+    F3 = F(S_2[0])
+    S_3 = S + delta_t * F3
+
+    F4 = F(S_3[0])
+
+    S_out = S + delta_t/6 * (F1 + 2*F2 + 2*F3 + F4)
+    return S_out
+
+def preditor_corretor_4_ordem(S, F, delta_t, values):
+
+    error = 10**-7
+    F_1 = F(values[0][0])
+    F_2 = F(values[1][0])
+    F_3 = F(values[2][0])
+    F_4 = F(S[0])
+
+    # Predição
+    S_pred = S + delta_t/24 * (-9*F_1 + 37*F_2 - 59*F_3 + 55*F_4)
+
+    # Correção
+    F_new = F(S_pred[0])
+    S_correction = S + delta_t/24 * (-49*F_2 + 157*F_3 - 131*F_4 + 47*F_new)
+
+    S_error = abs((S_correction - S_pred)/S_correction)
+    while(S_error[0] > error and S_error[1] > error):
+        S_pred = S_correction[:]
+        F_new = F(S_pred[0])
+        S_correction = S + delta_t/24 * (-49*F_2 + 157*F_3 - 131*F_4 + 47*F_new)
+        S_error = abs((S_correction - S_pred)/S_correction)
+    
+    return S_correction
