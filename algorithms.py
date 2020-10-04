@@ -652,13 +652,13 @@ def preditor_corretor_4_ordem(S, F, delta_t, values):
 
     # Correção
     F_new = F(S_pred[0])
-    S_correction = S + delta_t/24 * (-49*F_2 + 157*F_3 - 131*F_4 + 47*F_new)
+    S_correction = S + delta_t/24 * (F_2 - 5*F_3 + 19*F_4 + 9*F_new)
 
     S_error = abs((S_correction - S_pred)/S_correction)
     while(S_error[0] > error and S_error[1] > error):
         S_pred = S_correction[:]
         F_new = F(S_pred[0])
-        S_correction = S + delta_t/24 * (-49*F_2 + 157*F_3 - 131*F_4 + 47*F_new)
+        S_correction = S + delta_t/24 * (F_2 - 5*F_3 + 19*F_4 + 9*F_new)
         S_error = abs((S_correction - S_pred)/S_correction)
     
     return S_correction

@@ -49,7 +49,6 @@ def output_newton_cotes(function, output_to_file=True, path="newton-cotes"):
     print(f"Polinomio 4 Aberta \t= {poli_4_aberta:.7f}")
     print(f"Integral \t\t= {integral_precisa}\n")
 
-
 def output_gauss_legendre(f, output_to_file=True, path="gauss-legendre"):
     gl_2p = integrate(f, 0, 1, math.pow(10, -6), gauss_legendre_2p, output_to_file, path)
     gl_3p = integrate(f, 0, 1, math.pow(10, -6), gauss_legendre_3p, output_to_file, path)
@@ -170,7 +169,6 @@ def output_potencia_regular():
     print(f'Autovetor Dominante de A1 = {autovetor_A1}\n')
     print(f'Autovalor Dominante de A2 = {autovalor_A2}')
     print(f'Autovetor Dominante de A2 = {autovetor_A2}')
-    
 
 def output_potencia_inversa():
     A1 = [
@@ -481,7 +479,6 @@ def output_preditor_corretor_4_ordem(t0, v0, y0, k, m, g, delta_t):
         v_imp = S[0]
 
         print(f"{dt}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
-
 
 def main():
     # output_newton_cotes(function)
