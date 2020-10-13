@@ -479,6 +479,30 @@ def output_preditor_corretor_4_ordem(t0, v0, y0, k, m, g, delta_t):
         v_imp = S[0]
 
         print(f"{dt}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
+    
+def output_PVC_2():
+    coeficientes = np.array([
+        [0 for i in range(49)] for j in range(49)
+    ])
+
+    for i in range(49):
+        coeficientes[i][i] = -256
+        
+        if(i - 7 >= 0):
+            coeficientes[i][i-7] = 64
+        if(i + 7 <= 48):
+            coeficientes[i][i+7] = 64
+        if(i - 1 >= 0 and i % 7 != 0):
+            coeficientes[i][i-1] = 64
+        if(i + 1 <= 48 and i % 7 != 6):
+            coeficientes[i][i+1] = 64
+    
+    solve_vector = np.array([4 for i in range(49)])
+
+    solution = np.linalg.solve(coeficientes, solve_vector)
+    print(solution)
+
+
 
 def main():
     # output_newton_cotes(function)
@@ -498,10 +522,11 @@ def main():
     # output_euler_explicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     # output_euler_implicito(0, 3, 150, 0.5, 0.5, 10, 10**-4)
     # output_runge_kutta(0, 3, 150, 0.5, 0.5, 10, 10**-4)
-    output_euler_explicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    # output_euler_explicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
     # output_euler_implicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
-    output_runge_kutta(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
-    output_preditor_corretor_4_ordem(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    # output_runge_kutta(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    # output_preditor_corretor_4_ordem(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
+    output_PVC_2()
 
 if __name__ == "__main__":
     main()
