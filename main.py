@@ -456,7 +456,6 @@ def output_preditor_corretor_4_ordem(t0, v0, y0, k, m, g, delta_t):
         pre_values[3] = runge_kutta_4_ordem(pre_values[2], F, dt)
         t_now = 0
         S = pre_values[3]
-
         while S[0] > 0:
             S = preditor_corretor_4_ordem(S, F, dt, pre_values)
             pre_values[0] = pre_values[1]
@@ -480,7 +479,32 @@ def output_preditor_corretor_4_ordem(t0, v0, y0, k, m, g, delta_t):
 
         print(f"{dt}\t{y_max:.7f}\t{t_dec:.7f}\t{t_total:.7f}\t{v_imp:.7f}")
     
-def output_PVC_2():
+def output_PVC_1_diferencas_finitas():
+    def function(x):
+        return (math.e**-x - math.e**x)/(math.e**-1 - math.e)
+    
+    coef = [[0 for j in range(7)] for i in range(7)]
+
+    for i in range(7):
+        coef[i][i] = -129
+
+        if(i - 1 >= 0):
+            coef[i][i-1] = 64
+        if(i + 1 < 7):
+            coef[i][i+1] = 64
+    
+    solve = [0 for i in range(7)]
+    solve[-1] = -64
+
+    precise_solution = [function(x/1000) for x in range(125, 1125, 125)]
+
+    solution = np.linalg.solve(coef, solve)
+    print("\nTabela PVC-1 N = 8 Diferenças Finitas")
+    print(f"Valor Preciso\tValor Aproximado\tErro")
+    for i in zip(solution, precise_solution):
+        print(f"{i[0]:.6f}\t{i[1]:.6f}\t\t{abs((i[0]-i[1])/i[0]):.6f}")
+
+def output_PVC_2_diferencas_finitas():
     coeficientes = np.array([
         [0 for i in range(49)] for j in range(49)
     ])
@@ -498,10 +522,53 @@ def output_PVC_2():
             coeficientes[i][i+1] = 64
     
     solve_vector = np.array([4 for i in range(49)])
+    v1 = -11/64
+    v2 = -7/32
+    v3 = -9/32
+    precise_solution = [v1, v2, v1, v2, v3, v2, v1, v2, v1]
+    calculated_solution = []
+    
+
 
     solution = np.linalg.solve(coeficientes, solve_vector)
-    print(solution)
+    calculated_solution.append(solution[8])
+    calculated_solution.append(solution[8+2])
+    calculated_solution.append(solution[8+2+2])
+    calculated_solution.append(solution[22])
+    calculated_solution.append(solution[22+2])
+    calculated_solution.append(solution[22+2+2])
+    calculated_solution.append(solution[36])
+    calculated_solution.append(solution[36+2])
+    calculated_solution.append(solution[36+2+2])
+    print("\nTabela PVC-2 N = 8 Difirenças Finitas")
+    print(f"Valor Preciso\tValor Aproximado\tErro")
+    for i in zip(calculated_solution, precise_solution):
+        print(f"{i[0]:.6f}\t{i[1]:.6f}\t\t{abs((i[0]-i[1])/i[0]):.6f}")
+    
+def output_PVC_1_elementos_finitos():
+    def function(x):
+        return (math.e**-x - math.e**x)/(math.e**-1 - math.e)
+    
+    coef = [[0 for j in range(7)] for i in range(7)]
 
+    for i in range(7):
+        coef[i][i] = 2*193/24
+
+        if(i - 1 >= 0):
+            coef[i][i-1] = -383/48
+        if(i + 1 < 7):
+            coef[i][i+1] = -383/48
+    
+    solve = [0 for i in range(7)]
+    solve[-1] = 383/48
+
+    precise_solution = [function(x/1000) for x in range(125, 1125, 125)]
+
+    solution = np.linalg.solve(coef, solve)
+    print("\nTabela PVC-1 N = 8 Elementos Finitos")
+    print(f"Valor Preciso\tValor Aproximado\tErro")
+    for i in zip(solution, precise_solution):
+        print(f"{i[0]:.6f}\t{i[1]:.6f}\t\t{abs((i[0]-i[1])/i[0]):.6f}")
 
 
 def main():
@@ -526,7 +593,9 @@ def main():
     # output_euler_implicito(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
     # output_runge_kutta(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
     # output_preditor_corretor_4_ordem(0, 5, 200, 0.25, 2, 10, [0.1, 0.01, 0.001, 0.0001])
-    output_PVC_2()
+    output_PVC_1_diferencas_finitas()
+    output_PVC_2_diferencas_finitas()
+    output_PVC_1_elementos_finitos()
 
 if __name__ == "__main__":
     main()
